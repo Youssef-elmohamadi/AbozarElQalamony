@@ -1,0 +1,129 @@
+# ==============================================================================
+# Comprehensive .gitignore for AbozarElQalamony (.NET Core / ASP.NET + Next.js)
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Visual Studio & IDEs
+# ------------------------------------------------------------------------------
+.vs/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.slnx.docstates
+*.vsidx
+*.dtbcache.v2
+*.futdcache.v2
+*.wsuo
+
+# ------------------------------------------------------------------------------
+# 2. .NET / C# Build Outputs & Temporary Files
+# ------------------------------------------------------------------------------
+[Bb]in/
+[Oo]bj/
+**/[Bb]in/
+**/[Oo]bj/
+artifacts/
+TestResults/
+*.pdb
+*.dll
+*.exe
+*.log
+*.tmp
+*.temp
+
+# NuGet Packages & Restore Caches
+*.nuget.props
+*.nuget.targets
+project.lock.json
+project.assets.json
+project.nuget.cache
+*.nuget.dgspec.json
+*.assets.cache
+*.CoreCompileInputs.cache
+*.AssemblyInfoInputs.cache
+*.FileListAbsolute.txt
+*.Up2Date
+
+# ------------------------------------------------------------------------------
+# 3. Node.js & Next.js (Frontend)
+# ------------------------------------------------------------------------------
+node_modules/
+**/node_modules/
+.next/
+**/.next/
+out/
+build/
+dist/
+.pnp
+.pnp.js
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Testing & Coverage
+coverage/
+*.lcov
+
+# Debug Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Next.js / TypeScript build info
+*.tsbuildinfo
+
+# Local Environment Variables
+.env*.local
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Vercel
+.vercel
+
+# ------------------------------------------------------------------------------
+# 4. Large Media Files, Uploads & Archives
+# (GitHub rejects files > 100MB, audio/video/zip should not be committed)
+# ------------------------------------------------------------------------------
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.iso
+
+# Audio & Video Files
+*.mp3
+*.mp4
+*.wav
+*.m4a
+*.webm
+*.avi
+*.mkv
+
+# User Dynamic Uploads (Keep directory structure via .gitkeep)
+**/wwwroot/uploads/*
+**/wwwRoot/uploads/*
+!**/wwwroot/uploads/**/.gitkeep
+!**/wwwRoot/uploads/**/.gitkeep
+
+# ------------------------------------------------------------------------------
+# 5. Operating System & Miscellaneous
+# ------------------------------------------------------------------------------
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
+*.swp
+*~

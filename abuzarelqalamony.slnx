@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="abuzarelqalamony.Api/abuzarelqalamony.Api.csproj" />
+  <Project Path="abuzarelqalamony.Application/abuzarelqalamony.Application.csproj" />
+  <Project Path="abuzarelqalamony.Domain/abuzarelqalamony.Domain.csproj" />
+  <Project Path="abuzarelqalamony.Infrastructure/abuzarelqalamony.Infrastructure.csproj" />
+</Solution>

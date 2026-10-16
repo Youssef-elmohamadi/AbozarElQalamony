@@ -1,0 +1,6 @@
+@abuzarelqalamony.Api_HostAddress = http://localhost:5188
+
+GET {{abuzarelqalamony.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
