@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
 import Image from "next/image";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import type { Category } from "@/api/public/categories";
 
 interface PublicHeaderProps {
@@ -52,8 +51,7 @@ export default function PublicHeader({
 }: PublicHeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const searchParams = useSearchParams();
-
+  
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [moreDropdownOpen, setMoreDropdownOpen] = useState(false);
@@ -111,13 +109,12 @@ export default function PublicHeader({
     }
   };
 
-  const currentType = searchParams?.get("type");
-  const isHomeActive = pathname === "/" && !currentType;
-  const isLessonsActive = pathname === "/lessons" || (pathname.startsWith("/content") && currentType === "lessons");
-  const isSermonsActive = pathname === "/sermons" || (pathname.startsWith("/content") && currentType === "sermons");
-  const isBooksActive = pathname === "/books" || (pathname.startsWith("/content") && currentType === "books");
-  const isArticlesActive = pathname === "/articles" || (pathname.startsWith("/content") && currentType === "articles");
-  const isQuranActive = pathname.startsWith("/quran") || (pathname.startsWith("/content") && currentType === "quran");
+  const isHomeActive = pathname === "/";
+  const isLessonsActive = pathname === "/lessons" || pathname.startsWith("/lessons/");
+  const isSermonsActive = pathname === "/sermons" || pathname.startsWith("/sermons/");
+  const isBooksActive = pathname === "/books" || pathname.startsWith("/books/");
+  const isArticlesActive = pathname === "/articles" || pathname.startsWith("/articles/");
+  const isQuranActive = pathname.startsWith("/quran");
   const isCategoriesActive = pathname.startsWith("/categories") || moreDropdownOpen;
 
   const NAV_LINKS = [
