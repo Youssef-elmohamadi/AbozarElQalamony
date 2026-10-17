@@ -1,4 +1,4 @@
-﻿using abuzarelqalamony.Application.Interfaces;
+using abuzarelqalamony.Application.Interfaces;
 using abuzarelqalamony.Domain.Entities;
 using abuzarelqalamony.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
@@ -12,11 +12,24 @@ namespace abuzarelqalamony.Infrastructure.Repositories
         public ArticleRepository(ApplicationDbContext context) => _context = context;
 
         public async Task<(IReadOnlyList<Article> Items, int TotalCount)> GetPagedAsync(
-            int page, int pageSize, CancellationToken ct = default)
+            int page, int pageSize, string? search = null, string? sort = null, CancellationToken ct = default)
         {
-            var query = _context.Articles
-                .AsNoTracking()
-                .OrderByDescending(a => a.PublishDate);
+            var query = _context.Articles.AsNoTracking().AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var term = search.Trim();
+                query = query.Where(a => a.Title.Contains(term)
+                    || (a.Description != null && a.Description.Contains(term))
+                    || a.Body.Contains(term));
+            }
+
+            var isOldest = string.Equals(sort, "oldest", StringComparison.OrdinalIgnoreCase) ||
+                           string.Equals(sort, "asc", StringComparison.OrdinalIgnoreCase);
+
+            query = isOldest
+                ? query.OrderBy(a => a.PublishDate)
+                : query.OrderByDescending(a => a.PublishDate);
 
             var totalCount = await query.CountAsync(ct);
             var items = await query

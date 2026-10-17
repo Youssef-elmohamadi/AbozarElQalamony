@@ -31,6 +31,21 @@ const normalizeCategoryName = (name: string) => {
   return name;
 };
 
+const getCategoryHref = (cat: Category) => {
+  switch (cat.type) {
+    case 1:
+      return `/books?categoryId=${cat.id}`;
+    case 2:
+      return `/lessons?categoryId=${cat.id}`;
+    case 3:
+      return `/sermons?categoryId=${cat.id}`;
+    case 4:
+      return `/quran?categoryId=${cat.id}`;
+    default:
+      return `/lessons?categoryId=${cat.id}`;
+  }
+};
+
 export default function PublicHeader({
   categories = [],
   youtubeUrl = "https://www.youtube.com/@AboZarAlqalamoni",
@@ -77,6 +92,18 @@ export default function PublicHeader({
     };
   }, [moreDropdownOpen]);
 
+  // منع التمرير في الصفحة الخلفية عند فتح القائمة على الموبايل
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
@@ -86,20 +113,20 @@ export default function PublicHeader({
 
   const currentType = searchParams?.get("type");
   const isHomeActive = pathname === "/" && !currentType;
-  const isLessonsActive = pathname.startsWith("/content") && currentType === "lessons";
-  const isSermonsActive = pathname.startsWith("/content") && currentType === "sermons";
-  const isBooksActive = pathname.startsWith("/content") && currentType === "books";
-  const isArticlesActive = pathname.startsWith("/content") && currentType === "articles";
-  const isQuranActive = pathname.startsWith("/content") && currentType === "quran";
+  const isLessonsActive = pathname === "/lessons" || (pathname.startsWith("/content") && currentType === "lessons");
+  const isSermonsActive = pathname === "/sermons" || (pathname.startsWith("/content") && currentType === "sermons");
+  const isBooksActive = pathname === "/books" || (pathname.startsWith("/content") && currentType === "books");
+  const isArticlesActive = pathname === "/articles" || (pathname.startsWith("/content") && currentType === "articles");
+  const isQuranActive = pathname.startsWith("/quran") || (pathname.startsWith("/content") && currentType === "quran");
   const isCategoriesActive = pathname.startsWith("/categories") || moreDropdownOpen;
 
   const NAV_LINKS = [
     { label: "الرئيسية", href: "/", isActive: isHomeActive },
-    { label: "مكتبة الدروس", href: "/content?type=lessons", isActive: isLessonsActive },
-    { label: "مكتبة الخطب", href: "/content?type=sermons", isActive: isSermonsActive },
-    { label: "مكتبة الكتب", href: "/content?type=books", isActive: isBooksActive },
-    { label: "مكتبة المقالات", href: "/content?type=articles", isActive: isArticlesActive },
-    { label: "مكتبة القرآن الكريم", href: "/content?type=quran", isActive: isQuranActive },
+    { label: "مكتبة الدروس", href: "/lessons", isActive: isLessonsActive },
+    { label: "مكتبة الخطب", href: "/sermons", isActive: isSermonsActive },
+    { label: "مكتبة الكتب", href: "/books", isActive: isBooksActive },
+    { label: "مكتبة المقالات", href: "/articles", isActive: isArticlesActive },
+    { label: "مكتبة القرآن الكريم", href: "/quran", isActive: isQuranActive },
   ];
 
   return (
@@ -111,12 +138,12 @@ export default function PublicHeader({
           <Link
             href="/"
             className="flex items-center gap-3.5 group select-none transition-transform duration-200"
-            aria-label="الصفحة الرئيسية - الشيخ أبو ذر القلموني"
+            aria-label="الصفحة الرئيسية - الشيخ أبي ذر القلموني"
           >
             <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl p-1 bg-brand-50/70 border border-brand-200/60 shadow-xs flex items-center justify-center">
               <Image
                 src="/logo-qalamuni-1.svg"
-                alt="شعار الشيخ أبو ذر القلموني"
+                alt="شعار الشيخ أبي ذر القلموني"
                 width={50}
                 height={50}
                 priority
@@ -124,11 +151,11 @@ export default function PublicHeader({
               />
             </div>
             <div className="flex flex-col text-right">
-              <span className="text-lg sm:text-xl font-black text-brand-900 tracking-tight font-serif pb-2">
-                الشيخ أبو ذر القلموني
-              </span>
               <span className="text-[11px] sm:text-xs font-semibold text-accent-600 tracking-wide">
                 الموقع الرسمي لفضيلة الشيخ
+              </span>
+              <span className="text-lg sm:text-xl font-black text-brand-900 tracking-tight font-serif">
+                أبي ذر القلموني
               </span>
             </div>
           </Link>
@@ -342,9 +369,9 @@ export default function PublicHeader({
                         {categories.map((cat) => (
                           <Link
                             key={cat.id}
-                            href={`/categories/${cat.id}`}
+                            href={getCategoryHref(cat)}
                             onClick={() => setMoreDropdownOpen(false)}
-                            className="group block p-3 rounded-xl hover:bg-[#e8f0f0] transition-colors text-right border border-transparent hover:border-[#D5DAC8]/60"
+                            className="group block p-3 rounded-xl hover:bg-[#F2F4ED] transition-all duration-150 text-right border border-transparent hover:border-[#D5DAC8]"
                           >
                             {/* Category Type Above */}
                             <span className="block text-[11px] font-bold text-[#C0673F] group-hover:text-[#A65330] mb-0.5">
@@ -376,7 +403,7 @@ export default function PublicHeader({
 
           {/* Mobile Drawer Menu */}
           {mobileMenuOpen && (
-            <div className="lg:hidden py-3 border-t border-brand-200/50 space-y-2">
+            <div className="lg:hidden py-3 border-t border-brand-200/50 space-y-2 max-h-[calc(100vh-140px)] overflow-y-auto overscroll-contain menu-scrollbar pl-1.5">
               {/* Mobile Hijri Date */}
               {hijriDate && (
                 <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-[#D5DAC8]/80 text-xs text-[#4B533E] font-medium mb-2">
@@ -411,9 +438,9 @@ export default function PublicHeader({
                     {categories.map((cat) => (
                       <Link
                         key={cat.id}
-                        href={`/categories/${cat.id}`}
+                        href={getCategoryHref(cat)}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="block p-2.5 rounded-xl hover:bg-[#e8f0f0] text-right transition-colors"
+                        className="block p-2.5 rounded-xl hover:bg-[#F2F4ED] text-right transition-colors"
                       >
                         <span className="block text-[11px] font-bold text-[#C0673F]">
                           {getCategoryTypeLabel(cat.type)}

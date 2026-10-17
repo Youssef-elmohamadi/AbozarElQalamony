@@ -1,4 +1,4 @@
-﻿using abuzarelqalamony.Domain.Entities;
+using abuzarelqalamony.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace abuzarelqalamony.Infrastructure.Data
@@ -16,6 +16,7 @@ namespace abuzarelqalamony.Infrastructure.Data
         public DbSet<Sermon> Sermons { get; set; }
         public DbSet<Article> Articles { get; set; }
         public DbSet<SiteAlert> SiteAlerts { get; set; }
+        public DbSet<Quran> Qurans { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

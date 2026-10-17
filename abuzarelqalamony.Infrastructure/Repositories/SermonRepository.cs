@@ -18,6 +18,7 @@ namespace abuzarelqalamony.Infrastructure.Repositories
             string? categoryName = null,
             string? title = null,
             string? search = null,
+            string? sort = null,
             CancellationToken ct = default)
         {
             var query = _context.Sermons
@@ -50,9 +51,15 @@ namespace abuzarelqalamony.Infrastructure.Repositories
                     || s.Category.Name.Contains(term));
             }
 
+            var isOldest = string.Equals(sort, "oldest", StringComparison.OrdinalIgnoreCase) ||
+                           string.Equals(sort, "asc", StringComparison.OrdinalIgnoreCase);
+
+            query = isOldest
+                ? query.OrderBy(s => s.KhutbahDate)
+                : query.OrderByDescending(s => s.KhutbahDate);
+
             var totalCount = await query.CountAsync(ct);
             var items = await query
-                .OrderByDescending(s => s.KhutbahDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync(ct);
@@ -65,6 +72,7 @@ namespace abuzarelqalamony.Infrastructure.Repositories
             int page,
             int pageSize,
             string? search = null,
+            string? sort = null,
             CancellationToken ct = default)
         {
             var query = _context.Sermons
@@ -80,9 +88,15 @@ namespace abuzarelqalamony.Infrastructure.Repositories
                     || (s.Description != null && s.Description.Contains(term)));
             }
 
+            var isOldest = string.Equals(sort, "oldest", StringComparison.OrdinalIgnoreCase) ||
+                           string.Equals(sort, "asc", StringComparison.OrdinalIgnoreCase);
+
+            query = isOldest
+                ? query.OrderBy(s => s.KhutbahDate)
+                : query.OrderByDescending(s => s.KhutbahDate);
+
             var totalCount = await query.CountAsync(ct);
             var items = await query
-                .OrderByDescending(s => s.KhutbahDate)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync(ct);

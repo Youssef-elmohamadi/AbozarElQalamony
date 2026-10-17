@@ -1,4 +1,4 @@
-﻿using abuzarelqalamony.Domain.Entities;
+using abuzarelqalamony.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -31,6 +31,12 @@ namespace abuzarelqalamony.Infrastructure.Data.Configurations
 
             builder.Property(b => b.CreatedAt)
                    .IsRequired();
+
+            builder.Property(b => b.PagesCount);
+
+            builder.Property(b => b.FileSizeInMB);
+
+            builder.Property(b => b.TableOfContentsJson);
 
             builder.HasOne(b => b.Category)
                    .WithMany(c => c.Books)

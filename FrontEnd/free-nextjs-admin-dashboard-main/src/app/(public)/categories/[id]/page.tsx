@@ -12,6 +12,7 @@ import {
 
 interface CategoryPageProps {
   params: Promise<{ id: string }>;
+  searchParams?: Promise<{ sort?: string }>;
 }
 
 export async function generateMetadata({
@@ -40,9 +41,15 @@ export async function generateMetadata({
   };
 }
 
-export default async function CategoryPage({ params }: CategoryPageProps) {
+export default async function CategoryPage({
+  params,
+  searchParams,
+}: CategoryPageProps) {
   const { id } = await params;
+  const sParams = (await searchParams) || {};
+  const sort = sParams.sort === "oldest" ? "oldest" : "latest";
   const numId = Number(id);
+
   const categories = await getPublicCategories();
   const category = categories.find((c) => String(c.id) === id);
 
@@ -50,12 +57,12 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
     notFound();
   }
 
-  // Fetch all content for this category in parallel
+  // Fetch all content for this category in parallel with sort
   const [lessons, sermons, books, articles] = await Promise.all([
-    getPublicLessons({ categoryId: numId, pageSize: 20 }),
-    getPublicSermons({ categoryId: numId, pageSize: 20 }),
-    getPublicBooks({ categoryId: numId, pageSize: 20 }),
-    getPublicArticles({ categoryId: numId, pageSize: 20 }),
+    getPublicLessons({ categoryId: numId, pageSize: 30, sort }),
+    getPublicSermons({ categoryId: numId, pageSize: 30, sort }),
+    getPublicBooks({ categoryId: numId, pageSize: 30, sort }),
+    getPublicArticles({ categoryId: numId, pageSize: 30, sort }),
   ]);
 
   const totalItems =
@@ -66,7 +73,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   return (
     <div className="py-10 sm:py-14">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
         {/* ================= BREADCRUMBS & HEADER ================= */}
         <div className="space-y-4">
           <nav className="flex items-center gap-2 text-xs text-gray-500 font-semibold">
@@ -101,6 +108,40 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           </div>
         </div>
 
+        {/* ================= SORT BAR ================= */}
+        {totalItems > 0 && (
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-white rounded-2xl border border-brand-200/80 p-3.5 px-5 shadow-xs">
+            <div className="flex items-center gap-2 text-xs font-bold text-brand-900">
+              <svg className="w-4 h-4 text-[#3F4A2B]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12" />
+              </svg>
+              <span>ترتيب المواد:</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Link
+                href={`/categories/${id}?sort=latest`}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors ${
+                  sort === "latest"
+                    ? "bg-[#3F4A2B] text-white shadow-xs"
+                    : "bg-[#EEF0E6] text-brand-900 hover:bg-[#E2E6D8]"
+                }`}
+              >
+                الأحدث أولاً
+              </Link>
+              <Link
+                href={`/categories/${id}?sort=oldest`}
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-colors ${
+                  sort === "oldest"
+                    ? "bg-[#3F4A2B] text-white shadow-xs"
+                    : "bg-[#EEF0E6] text-brand-900 hover:bg-[#E2E6D8]"
+                }`}
+              >
+                الأقدم أولاً
+              </Link>
+            </div>
+          </div>
+        )}
+
         {/* ================= CONTENT GRIDS ================= */}
         {totalItems === 0 ? (
           <div className="text-center py-16 bg-white rounded-2xl border border-brand-100 p-8 text-gray-500 text-sm">
@@ -124,7 +165,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                     >
                       <div>
                         <h3 className="text-sm font-extrabold text-brand-900 mb-1">
-                          {lesson.title}
+                          <Link href={`/lessons/${lesson.id}`} className="hover:text-brand-600 transition-colors">
+                            {lesson.title}
+                          </Link>
                         </h3>
                         {lesson.description && (
                           <p className="text-xs text-gray-600 line-clamp-2">
@@ -136,16 +179,13 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
                         <span className="text-gray-400">
                           {lesson.durationInMinutes || 45} دقيقة
                         </span>
-                        {lesson.audioFilePath && (
-                          <a
-                            href={lesson.audioFilePath}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-bold text-[#3F4A2B] hover:text-[#C0673F]"
-                          >
-                            استماع &larr;
-                          </a>
-                        )}
+                        <Link
+                          href={`/lessons/${lesson.id}`}
+                          className="font-bold text-[#3F4A2B] hover:text-[#C0673F] flex items-center gap-1"
+                        >
+                          <span>استماع وتفاصيل</span>
+                          <span>&larr;</span>
+                        </Link>
                       </div>
                     </div>
                   ))}

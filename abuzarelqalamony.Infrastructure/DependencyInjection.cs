@@ -27,7 +27,10 @@ namespace abuzarelqalamony.Infrastructure
             services.AddScoped<IArticleService, ArticleService>();
             services.AddScoped<ISiteAlertRepository, SiteAlertRepository>();
             services.AddScoped<ISiteAlertService, SiteAlertService>();
+            services.AddScoped<IQuranRepository, QuranRepository>();
+            services.AddScoped<IQuranService, QuranService>();
             services.AddScoped<IHomeService, HomeService>();
+            services.AddScoped<ISearchService, SearchService>();
             return services;
         }
     }

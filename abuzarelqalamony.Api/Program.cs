@@ -83,21 +83,21 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 
-// Seed Database with Islamic Content
-using (var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    try
-    {
-        var db = services.GetRequiredService<ApplicationDbContext>();
-        var hasher = services.GetRequiredService<abuzarelqalamony.Application.Interfaces.IHashPassword>();
-        await DatabaseSeeder.SeedAsync(db, hasher);
-    }
-    catch (Exception ex)
-    {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred while seeding the database.");
-    }
-}
+// Seed Database with Islamic Content (Disabled: real data entry in progress)
+// using (var scope = app.Services.CreateScope())
+// {
+//     var services = scope.ServiceProvider;
+//     try
+//     {
+//         var db = services.GetRequiredService<ApplicationDbContext>();
+//         var hasher = services.GetRequiredService<abuzarelqalamony.Application.Interfaces.IHashPassword>();
+//         await DatabaseSeeder.SeedAsync(db, hasher);
+//     }
+//     catch (Exception ex)
+//     {
+//         var logger = services.GetRequiredService<ILogger<Program>>();
+//         logger.LogError(ex, "An error occurred while seeding the database.");
+//     }
+// }
 
 app.Run();

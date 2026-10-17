@@ -36,6 +36,7 @@ namespace abuzarelqalamony.Infrastructure.Services
                 title,
                 query.AuthorName,
                 query.Search,
+                query.Sort,
                 ct);
 
             var dtos = items.Select(MapToDto).ToList();
@@ -57,7 +58,7 @@ namespace abuzarelqalamony.Infrastructure.Services
                 : (!string.IsNullOrWhiteSpace(query.Name) ? query.Name : query.Search);
 
             var (items, totalCount) = await _bookRepository.GetPagedByCategoryIdAsync(
-                categoryId, query.Page, query.PageSize, searchTerm, ct);
+                categoryId, query.Page, query.PageSize, searchTerm, query.Sort, ct);
 
             var dtos = items.Select(MapToDto).ToList();
             var paged = PagedResult<BookResponseDto>.Create(dtos, totalCount, query.Page, query.PageSize);
@@ -107,6 +108,9 @@ namespace abuzarelqalamony.Infrastructure.Services
                     CategoryId = dto.CategoryId,
                     PdfFilePath = pdfPath,
                     CoverImagePath = coverImagePath,
+                    PagesCount = dto.PagesCount,
+                    FileSizeInMB = dto.FileSizeInMB,
+                    TableOfContentsJson = dto.TableOfContentsJson,
                     CreatedAt = DateTime.UtcNow
                 };
 
@@ -168,6 +172,13 @@ namespace abuzarelqalamony.Infrastructure.Services
                 if (dto.PublishDate.HasValue)
                     book.PublishDate = dto.PublishDate.Value;
 
+                if (dto.PagesCount.HasValue)
+                    book.PagesCount = dto.PagesCount.Value;
+                if (dto.FileSizeInMB.HasValue)
+                    book.FileSizeInMB = dto.FileSizeInMB.Value;
+                if (dto.TableOfContentsJson != null)
+                    book.TableOfContentsJson = dto.TableOfContentsJson;
+
                 await _bookRepository.UpdateAsync(book, ct);
                 return ApiResponse<BookResponseDto>.SuccessResult(MapToDto(book), "Book updated successfully.");
             }
@@ -203,6 +214,9 @@ namespace abuzarelqalamony.Infrastructure.Services
             CoverImagePath = b.CoverImagePath,
             PublishDate = b.PublishDate,
             CreatedAt = b.CreatedAt,
+            PagesCount = b.PagesCount,
+            FileSizeInMB = b.FileSizeInMB,
+            TableOfContentsJson = b.TableOfContentsJson,
             CategoryId = b.CategoryId,
             CategoryName = b.Category?.Name ?? string.Empty
         };

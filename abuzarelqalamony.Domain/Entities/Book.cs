@@ -1,4 +1,4 @@
-﻿namespace abuzarelqalamony.Domain.Entities
+namespace abuzarelqalamony.Domain.Entities
 {
     public class Book
     {
@@ -17,6 +17,12 @@
         public DateTime? PublishDate { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+
+        public int? PagesCount { get; set; }
+
+        public double? FileSizeInMB { get; set; }
+
+        public string? TableOfContentsJson { get; set; }
 
         public int CategoryId { get; set; }
         public Category Category { get; set; } = null!;

@@ -54,6 +54,31 @@ const formatLessons = (n: number) =>
     many: "درساً",
   });
 
+function formatDuration(totalMinutes: number): string {
+  if (!totalMinutes || totalMinutes <= 0) return "غير محدد";
+  const hours = Math.floor(totalMinutes / 60);
+  const minutes = totalMinutes % 60;
+
+  if (hours === 0) {
+    return `${minutes} دقيقة`;
+  }
+
+  const hoursStr =
+    hours === 1
+      ? "ساعة"
+      : hours === 2
+        ? "ساعتان"
+        : hours >= 3 && hours <= 10
+          ? `${hours} ساعات`
+          : `${hours} ساعة`;
+
+  if (minutes === 0) {
+    return hoursStr;
+  }
+
+  return `${hoursStr} و${minutes} دقيقة`;
+}
+
 const formatBooks = (n: number) =>
   formatArabicCount(n, {
     zero: "لا توجد كتب",
@@ -162,105 +187,107 @@ export default async function HomePage() {
   } = homeData;
 
   return (
-    <div className="py-8 sm:py-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
-        {/* ================= HERO SECTION (MATCHING SCHOLAR IDENTITY) ================= */}
-        <section className="py-4 sm:py-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
-            {/* Right Side: Text & Actions */}
-            <div className="lg:col-span-7 space-y-4 text-right">
-              {/* Official Badge Pill */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#D5DAC8]/90 bg-[#F5F7F0]/80 text-xs sm:text-[13px] text-[#4B533E] font-medium shadow-2xs">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#C0673F]" />
-                <span>الموقع العلمي والدعوي الرسمي المعتمد</span>
-              </div>
-
-              {/* Scholar Name in Authentic Ruqaa Calligraphy */}
-              <h1 className="space-y-1">
-                <span className="block text-3xl sm:text-4xl lg:text-[44px] font-bold text-[#2A341E] font-ruqaa leading-tight">
-                  منصة فضيلة الشيخ
-                </span>
-                <span
-                  className="block text-3xl sm:text-4xl lg:text-[44px] font-bold text-[#C0673F] font-ruqaa leading-tight"
-                  aria-label="أبي ذر القلموني"
-                >
-                  <span className="inline-block ml-[6px] sm:ml-[7px]">أ</span>بي ذر القلموني
-                </span>
-              </h1>
-
-              {/* Natural Human-Scaled Description */}
-              <p className="text-sm sm:text-[15px] text-[#4B533E] max-w-xl leading-relaxed">
-                مرحباً بكم في البوابة الرسمية لتراث دروس ومؤلفات فضيلة الشيخ أبي ذر
-                القلموني، حفظه الله، في التزكية والرقائق، والفقه والحديث، وخطب
-                الجمعة، ودعوة القلوب للفرار إلى الله.
-              </p>
-
-              {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-2">
-                <Link
-                  href="/content?type=lessons"
-                  className="px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-[#273318] hover:bg-[#343E23] text-white text-xs sm:text-sm font-bold shadow-xs transition-colors"
-                >
-                  ابدأ من مكتبة الدروس
-                </Link>
-
-                <Link
-                  href="/marhaban-bi-al-taebeen"
-                  className="px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-white/80 hover:bg-[#EEF0E6] border border-[#B8C0A6] text-[#273318] text-xs sm:text-sm font-bold shadow-2xs transition-colors"
-                >
-                  اسطوانة مرحبا بالتائبين
-                </Link>
-              </div>
-            </div>
-
-            {/* Left Side: Dark Olive Asymmetric Card */}
-            <div className="lg:col-span-5 flex justify-center lg:justify-start">
-              <div className="w-full max-w-[340px] sm:max-w-[370px] bg-[#29351C] text-white p-7 sm:p-9 rounded-[28px] rounded-br-[75px] shadow-xl flex flex-col items-center text-center">
-                {/* White Emblem Badge */}
-                <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-2xl bg-[#FAFAF5] p-3 shadow-md flex items-center justify-center mb-5">
-                  <Image
-                    src="/logo-qalamuni-1.svg"
-                    alt="شعار الشيخ أبو ذر القلموني"
-                    width={56}
-                    height={56}
-                    className="w-full h-full object-contain"
-                  />
+    <div className="pt-6 sm:pt-10 pb-8 sm:pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+        {/* ================= HERO & ALERTS SECTION (FIRST SCREEN ONLY) ================= */}
+        <div className="space-y-6 sm:space-y-8">
+          <section className="py-2 sm:py-3">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+              {/* Right Side: Text & Actions */}
+              <div className="lg:col-span-7 space-y-4 text-right">
+                {/* Official Badge Pill */}
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-[#D5DAC8]/90 bg-[#F5F7F0]/80 text-xs sm:text-[13px] text-[#4B533E] font-medium shadow-2xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#C0673F]" />
+                  <span>الموقع العلمي والدعوي الرسمي المعتمد</span>
                 </div>
 
-                {/* Title */}
-                <h2
-                  className="text-xl sm:text-2xl font-bold text-[#FAFAF5] font-ruqaa mb-3 tracking-wide"
-                  aria-label="مشروع ففروا إلى الله"
-                >
-                  ــفـفروا إلى الله
-                </h2>
+                {/* Scholar Name in Authentic Ruqaa Calligraphy */}
+                <h1 className="space-y-1">
+                  <span className="block text-3xl sm:text-4xl lg:text-[44px] font-bold text-[#2A341E] font-ruqaa leading-tight">
+                    موقع فضيلة الشيخ
+                  </span>
+                  <span
+                    className="block text-3xl sm:text-4xl lg:text-[44px] font-bold text-[#C0673F] font-ruqaa leading-tight"
+                    aria-label="أبي ذر القلموني"
+                  >
+                    <span className="inline-block ml-[6px] sm:ml-[7px]">أ</span>بي ذر القلموني
+                  </span>
+                </h1>
 
-                {/* Quranic Ayah */}
-                <p className="text-xs sm:text-sm text-[#DFE5D7] font-amiri leading-relaxed mb-4 px-2">
-                  «قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا عَلَى أَنْفُسِهِمْ لَا
-                  تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ»
+                {/* Natural Human-Scaled Description */}
+                <p className="text-sm sm:text-[15px] text-[#4B533E] max-w-xl leading-relaxed">
+                  مرحباً بكم في البوابة الرسمية لتراث دروس ومؤلفات فضيلة الشيخ أبي ذر
+                  القلموني، حفظه الله، في التزكية والرقائق، والفقه والحديث، وخطب
+                  الجمعة، ودعوة القلوب للفرار إلى الله.
                 </p>
 
-                {/* Accent Divider */}
-                <div className="w-24 h-px bg-[#C0673F]/70 mb-4" />
+                {/* Action Buttons */}
+                <div className="flex flex-wrap items-center gap-3 pt-2">
+                  <Link
+                    href="/lessons"
+                    className="px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-[#273318] hover:bg-[#343E23] text-white text-xs sm:text-sm font-bold shadow-xs transition-colors"
+                  >
+                    ابدأ من مكتبة الدروس
+                  </Link>
 
-                {/* Category Note */}
-                <span className="text-[11px] sm:text-xs font-semibold text-[#DEA587]">
-                  دروس وخطب ومؤلفات مسموعة ومقروءة
-                </span>
+                  <Link
+                    href="/marhaban-bi-al-taebeen"
+                    className="px-6 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl bg-white/80 hover:bg-[#EEF0E6] border border-[#B8C0A6] text-[#273318] text-xs sm:text-sm font-bold shadow-2xs transition-colors"
+                  >
+                    اسطوانة مرحبا بالتائبين
+                  </Link>
+                </div>
+              </div>
+
+              {/* Left Side: Dark Olive Asymmetric Card */}
+              <div className="lg:col-span-5 flex justify-center lg:justify-start">
+                <div className="w-full max-w-[340px] sm:max-w-[370px] bg-[#29351C] text-white p-7 sm:p-9 rounded-[28px] rounded-br-[75px] shadow-xl flex flex-col items-center text-center">
+                  {/* White Emblem Badge */}
+                  <div className="w-20 h-20 sm:w-22 sm:h-22 rounded-2xl bg-[#FAFAF5] p-3 shadow-md flex items-center justify-center mb-5">
+                    <Image
+                      src="/logo-qalamuni-1.svg"
+                      alt="شعار الشيخ أبو ذر القلموني"
+                      width={56}
+                      height={56}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+
+                  {/* Title */}
+                  <h2
+                    className="text-xl sm:text-2xl font-bold text-[#FAFAF5] font-ruqaa mb-3 tracking-wide"
+                    aria-label="مشروع ففروا إلى الله"
+                  >
+                    ــفـفروا إلى الله
+                  </h2>
+
+                  {/* Quranic Ayah */}
+                  <p className="text-xs sm:text-sm text-[#DFE5D7] font-amiri leading-relaxed mb-4 px-2">
+                    «قُلْ يَا عِبَادِيَ الَّذِينَ أَسْرَفُوا عَلَى أَنْفُسِهِمْ لَا
+                    تَقْنَطُوا مِن رَّحْمَةِ اللَّهِ»
+                  </p>
+
+                  {/* Accent Divider */}
+                  <div className="w-24 h-px bg-[#C0673F]/70 mb-4" />
+
+                  {/* Category Note */}
+                  <span className="text-[11px] sm:text-xs font-semibold text-[#DEA587]">
+                    دروس وخطب ومؤلفات مسموعة ومقروءة
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        {/* ================= ACTIVE ALERTS TICKER ================= */}
-        {activeAlerts && activeAlerts.length > 0 && (
-          <AlertsTicker alerts={activeAlerts} />
-        )}
+          {/* ================= ACTIVE ALERTS TICKER ================= */}
+          {activeAlerts && activeAlerts.length > 0 && (
+            <AlertsTicker alerts={activeAlerts} />
+          )}
+        </div>
 
         {/* ================= TOP CATEGORIES SECTION ================= */}
         {topCategories && topCategories.length > 0 && (
-          <section className="max-w-[1200px] mx-auto space-y-4">
+          <section className="max-w-[1200px] mx-auto space-y-4 pt-4 sm:pt-8">
             <div className="flex items-center gap-2.5 border-b border-[#E9E2D3] pb-3">
               <span className="w-1.5 h-6 rounded-full bg-[#C0673F]" />
               <h2 className="text-[24px] font-bold text-[#2A341E] leading-[1.35]">
@@ -392,8 +419,8 @@ export default async function HomePage() {
 
                     <h3 className="text-[18px] font-semibold text-[#1E2616] leading-[1.35] line-clamp-2 pt-0.5">
                       <Link
-                        href={`/content?type=lessons&id=${lesson.id}`}
-                        className="focus:outline-hidden after:absolute after:inset-0 after:rounded-[14px]"
+                        href={`/lessons/${lesson.id}`}
+                        className="hover:text-[#C0673F] transition-colors focus:outline-hidden"
                       >
                         {lesson.title}
                       </Link>
@@ -418,36 +445,22 @@ export default async function HomePage() {
                         <path strokeLinecap="round" strokeWidth="1.8" d="M12 6v6l4 2" />
                       </svg>
                       <span>
-                        {lesson.durationMinutes || lesson.durationInMinutes || 45} دقيقة
+                        {formatDuration(lesson.durationMinutes || lesson.durationInMinutes || 45)}
                       </span>
                     </span>
 
-                    {lesson.audioFilePath ? (
-                      <a
-                        href={getMediaUrl(lesson.audioFilePath)!}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="relative z-10 font-semibold text-[14px] text-[#C0673F] hover:text-[#9E4F28] flex items-center gap-1 leading-[1.5] transition-colors"
+                    <Link
+                      href={`/lessons/${lesson.id}`}
+                      className="font-semibold text-[14px] text-[#C0673F] hover:text-[#9E4F28] flex items-center gap-1 leading-[1.5] transition-colors"
+                    >
+                      <span>استماع</span>
+                      <svg
+                        className="w-3 h-3 fill-current transform group-hover:-translate-x-0.5 transition-transform"
+                        viewBox="0 0 24 24"
                       >
-                        <span>استماع</span>
-                        <svg
-                          className="w-3 h-3 fill-current transform group-hover:-translate-x-0.5 transition-transform"
-                          viewBox="0 0 24 24"
-                        >
-                          <path d="M8 5v14l11-7z" />
-                        </svg>
-                      </a>
-                    ) : (
-                      <span className="font-semibold text-[14px] text-[#C0673F] flex items-center gap-1 leading-[1.5]">
-                        <span>تفاصيل الدرس</span>
-                        <span
-                          aria-hidden="true"
-                          className="inline-block transform group-hover:-translate-x-1 transition-transform duration-200"
-                        >
-                          &larr;
-                        </span>
-                      </span>
-                    )}
+                        <path d="M8 5v14l11-7z" />
+                      </svg>
+                    </Link>
                   </div>
                 </div>
               ))}
@@ -577,7 +590,7 @@ export default async function HomePage() {
                 </h2>
               </div>
               <Link
-                href="/content?type=books"
+                href="/books"
                 className="text-[14px] font-semibold text-[#C0673F] hover:text-[#9E4F28] transition-colors flex items-center gap-1 leading-[1.5]"
               >
                 <span>جميع الكتب والمؤلفات</span>
@@ -596,14 +609,29 @@ export default async function HomePage() {
                     className="relative group bg-white rounded-[14px] border border-[#E9E2D3] p-4 shadow-none hover:border-[#D49E7C] transition-colors duration-150 flex flex-col justify-between"
                   >
                     <div className="space-y-2">
-                      <div className="w-full h-44 rounded-[10px] bg-gradient-to-br from-[#F5F7F0] to-[#E9EEE0] border border-[#E9E2D3] flex items-center justify-center text-brand-600 overflow-hidden relative">
+                      <Link
+                        href={`/books/${book.id}`}
+                        className="block w-full h-44 rounded-[10px] bg-[#EAE8E1] border border-[#E9E2D3] flex items-center justify-center text-brand-600 overflow-hidden relative group/cover"
+                      >
                         {coverUrl ? (
-                          <Image
-                            src={coverUrl}
-                            alt={book.title}
-                            fill
-                            className="object-cover"
-                          />
+                          <>
+                            {/* Blurred ambient backdrop */}
+                            <div
+                              className="absolute inset-0 bg-cover bg-center filter blur-md opacity-35 scale-110 pointer-events-none"
+                              style={{ backgroundImage: `url(${coverUrl})` }}
+                            />
+                            <div className="absolute inset-0 bg-black/5 pointer-events-none" />
+                            {/* Complete uncropped cover */}
+                            <div className="relative w-full h-full p-2 flex items-center justify-center">
+                              <Image
+                                src={coverUrl}
+                                alt={book.title}
+                                fill
+                                unoptimized
+                                className="object-contain drop-shadow-md group-hover/cover:scale-[1.03] transition-transform duration-300"
+                              />
+                            </div>
+                          </>
                         ) : (
                           <div className="flex flex-col items-center justify-center text-center p-3 text-[#3F4A2B]">
                             <svg className="w-10 h-10 mb-1 opacity-70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -617,7 +645,7 @@ export default async function HomePage() {
                             <span className="text-[11px] font-bold line-clamp-1">{book.title}</span>
                           </div>
                         )}
-                      </div>
+                      </Link>
 
                       {book.categoryName && (
                         <div>
@@ -628,10 +656,10 @@ export default async function HomePage() {
                         </div>
                       )}
 
-                      <h3 className="text-[16px] font-semibold text-[#1E2616] line-clamp-2 leading-[1.35]">
+                      <h3 className="text-[16px] font-semibold text-[#1E2616] hover:text-[#C0673F] transition-colors line-clamp-2 leading-[1.35]">
                         <Link
-                          href={`/content?type=books&id=${book.id}`}
-                          className="focus:outline-hidden after:absolute after:inset-0 after:rounded-[14px]"
+                          href={`/books/${book.id}`}
+                          className="hover:underline"
                         >
                           {book.title}
                         </Link>
@@ -643,15 +671,22 @@ export default async function HomePage() {
                     </div>
 
                     <div className="mt-4 pt-3 border-t border-[#F0F2EB] flex items-center justify-between text-xs">
-                      <span className="text-[#3F4735] text-[13px] font-medium leading-[1.5]">
-                        {book.pagesCount ? `${book.pagesCount} صفحة` : "كتاب إلكتروني"}
-                      </span>
+                      <Link
+                        href={`/books/${book.id}`}
+                        className="text-[12px] font-bold text-[#3F4A2B] hover:text-[#2A331D] flex items-center gap-1 transition-colors"
+                      >
+                        <span>تفاصيل وقراءة</span>
+                        <svg className="w-3 h-3 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </Link>
+
                       {pdfUrl ? (
                         <a
                           href={pdfUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="relative z-10 px-3 py-1 rounded-[8px] bg-[#3F4A2B] hover:bg-[#2C341D] text-white text-[12px] font-semibold transition-colors flex items-center gap-1"
+                          className="px-3 py-1 rounded-[8px] bg-[#3F4A2B] hover:bg-[#2C341D] text-white text-[12px] font-semibold transition-colors flex items-center gap-1"
                         >
                           <span>تحميل PDF</span>
                           <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

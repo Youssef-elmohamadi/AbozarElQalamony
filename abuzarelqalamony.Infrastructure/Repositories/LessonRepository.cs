@@ -18,6 +18,7 @@ namespace abuzarelqalamony.Infrastructure.Repositories
             string? categoryName = null,
             string? title = null,
             string? search = null,
+            string? sort = null,
             CancellationToken ct = default)
         {
             var query = _context.Lessons
@@ -50,9 +51,15 @@ namespace abuzarelqalamony.Infrastructure.Repositories
                     || l.Category.Name.Contains(term));
             }
 
+            var isOldest = string.Equals(sort, "oldest", StringComparison.OrdinalIgnoreCase) ||
+                           string.Equals(sort, "asc", StringComparison.OrdinalIgnoreCase);
+
+            query = isOldest
+                ? query.OrderBy(l => l.PublishDate ?? l.CreatedAt)
+                : query.OrderByDescending(l => l.PublishDate ?? l.CreatedAt);
+
             var totalCount = await query.CountAsync(ct);
             var items = await query
-                .OrderByDescending(l => l.PublishDate ?? l.CreatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync(ct);
@@ -65,6 +72,7 @@ namespace abuzarelqalamony.Infrastructure.Repositories
             int page,
             int pageSize,
             string? search = null,
+            string? sort = null,
             CancellationToken ct = default)
         {
             var query = _context.Lessons
@@ -78,9 +86,15 @@ namespace abuzarelqalamony.Infrastructure.Repositories
                 query = query.Where(l => l.Title.Contains(term) || (l.Description != null && l.Description.Contains(term)));
             }
 
+            var isOldest = string.Equals(sort, "oldest", StringComparison.OrdinalIgnoreCase) ||
+                           string.Equals(sort, "asc", StringComparison.OrdinalIgnoreCase);
+
+            query = isOldest
+                ? query.OrderBy(l => l.PublishDate ?? l.CreatedAt)
+                : query.OrderByDescending(l => l.PublishDate ?? l.CreatedAt);
+
             var totalCount = await query.CountAsync(ct);
             var items = await query
-                .OrderByDescending(l => l.PublishDate ?? l.CreatedAt)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync(ct);

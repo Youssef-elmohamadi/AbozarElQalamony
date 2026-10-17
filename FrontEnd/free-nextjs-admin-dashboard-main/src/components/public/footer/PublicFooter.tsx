@@ -89,22 +89,22 @@ export default function PublicFooter({
             </h4>
             <ul className="space-y-2 text-[13px] text-[#A6B29C]">
               <li>
-                <Link href="/content?type=lessons" className="hover:text-[#FAFAF5] transition-colors">
+                <Link href="/lessons" className="hover:text-[#FAFAF5] transition-colors">
                   الدروس العلمية
                 </Link>
               </li>
               <li>
-                <Link href="/content?type=sermons" className="hover:text-[#FAFAF5] transition-colors">
+                <Link href="/sermons" className="hover:text-[#FAFAF5] transition-colors">
                   خطب الجمعة
                 </Link>
               </li>
               <li>
-                <Link href="/content?type=books" className="hover:text-[#FAFAF5] transition-colors">
+                <Link href="/books" className="hover:text-[#FAFAF5] transition-colors">
                   الكتب والمؤلفات
                 </Link>
               </li>
               <li>
-                <Link href="/content?type=articles" className="hover:text-[#FAFAF5] transition-colors">
+                <Link href="/articles" className="hover:text-[#FAFAF5] transition-colors">
                   المقالات والرسائل
                 </Link>
               </li>
@@ -142,7 +142,7 @@ export default function PublicFooter({
         <div className="pb-6">
           <p className="text-[13px] text-[#A6B29C] leading-relaxed text-right">
             <strong className="text-[#C5D0BC] font-bold">إشعار النشر:</strong>{" "}
-            المواد متاحة لكل مسلم لنشر الخير والدعوة إلى الله، مع الحفاظ على نصها وعزوها لأهل العلم.
+   هذه المواد من أراد أن ينشرها فلينشرها دون إذن وليتق الله فيها.
           </p>
         </div>
 

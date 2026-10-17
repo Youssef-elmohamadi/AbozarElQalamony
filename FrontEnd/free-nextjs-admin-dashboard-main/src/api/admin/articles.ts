@@ -24,9 +24,9 @@ export const getArticles = async (
       BASE_URL,
       `/api/Articles?${params.toString()}`,
       {
-        next:{
-          tags:["articles"],
-          revalidate: 60,
+        next: {
+          tags: ["articles-list"],
+          revalidate: 43200,
         }
       },
       "admin_token"
@@ -48,6 +48,7 @@ export const getArticleById = async (id: number | string) => {
       {
         next: {
           tags: [`article-${id}`],
+          revalidate: 43200,
         },
       },
       "admin_token"

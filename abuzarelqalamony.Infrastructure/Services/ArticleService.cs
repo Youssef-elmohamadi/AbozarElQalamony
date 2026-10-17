@@ -1,4 +1,4 @@
-﻿using abuzarelqalamony.Application.Common;
+using abuzarelqalamony.Application.Common;
 using abuzarelqalamony.Application.DTOs.Articles;
 using abuzarelqalamony.Application.Interfaces;
 using abuzarelqalamony.Domain.Entities;
@@ -17,7 +17,8 @@ namespace abuzarelqalamony.Infrastructure.Services
         public async Task<ApiResponse<PagedResult<ArticleResponseDto>>> GetPagedAsync(
             ArticleQueryParams query, CancellationToken ct = default)
         {
-            var (items, totalCount) = await _articleRepository.GetPagedAsync(query.Page, query.PageSize, ct);
+            var searchTerm = !string.IsNullOrWhiteSpace(query.Search) ? query.Search : query.Title;
+            var (items, totalCount) = await _articleRepository.GetPagedAsync(query.Page, query.PageSize, searchTerm, query.Sort, ct);
             var dtos = items.Select(MapToDto).ToList();
             var paged = PagedResult<ArticleResponseDto>.Create(dtos, totalCount, query.Page, query.PageSize);
 

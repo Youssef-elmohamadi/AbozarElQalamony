@@ -64,6 +64,8 @@ namespace abuzarelqalamony.Application.DTOs.Lessons
         public string? Name { get; set; }
 
         public string? Search { get; set; }
+
+        public string? Sort { get; set; }
     }
 
     public class LessonResponseDto

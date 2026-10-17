@@ -1,4 +1,4 @@
-﻿using abuzarelqalamony.Application.Interfaces;
+using abuzarelqalamony.Application.Interfaces;
 using abuzarelqalamony.Domain.Entities;
 using abuzarelqalamony.Domain.Enums;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +16,7 @@ namespace abuzarelqalamony.Infrastructure.Data
             int addedSermons = 0;
             int addedArticles = 0;
             int addedAlerts = 0;
+            int addedQurans = 0;
 
             var now = DateTime.UtcNow;
             var thisMonthStart = new DateTime(now.Year, now.Month, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -156,6 +157,8 @@ namespace abuzarelqalamony.Infrastructure.Data
             // =========================================================================
             // 4. Books (الكتب والمؤلفات)
             // =========================================================================
+            var defaultTocJson = "[{\"title\":\"المقدمة\",\"page\":5},{\"title\":\"معنى الفرار إلى الله\",\"page\":19},{\"title\":\"التوبة والإنابة\",\"page\":33},{\"title\":\"الخوف والرجاء\",\"page\":47},{\"title\":\"المحبة والأنس بالله\",\"page\":61},{\"title\":\"الزهد والقناعة\",\"page\":75},{\"title\":\"التوكل والرضا\",\"page\":89},{\"title\":\"خاتمة\",\"page\":103}]";
+
             var books = new List<Book>
             {
                 new()
@@ -166,6 +169,9 @@ namespace abuzarelqalamony.Infrastructure.Data
                     PdfFilePath = "/uploads/books/fafirru-ila-allah.pdf",
                     CoverImagePath = "/uploads/books/covers/fafirru-ila-allah.jpg",
                     PublishDate = thisMonthStart.AddDays(2),
+                    PagesCount = 120,
+                    FileSizeInMB = 4.8,
+                    TableOfContentsJson = defaultTocJson,
                     CategoryId = subBooksRaqaeq.Id
                 },
                 new()
@@ -176,6 +182,9 @@ namespace abuzarelqalamony.Infrastructure.Data
                     PdfFilePath = "/uploads/books/al-bidaya.pdf",
                     CoverImagePath = "/uploads/books/covers/al-bidaya.jpg",
                     PublishDate = thisMonthStart.AddDays(5),
+                    PagesCount = 96,
+                    FileSizeInMB = 3.5,
+                    TableOfContentsJson = "[{\"title\":\"مقدمة الكتاب\",\"page\":3},{\"title\":\"فضل التوبة وشروطها\",\"page\":12},{\"title\":\"أول خطوة في طريق الاستقامة\",\"page\":28},{\"title\":\"ثبات القلب على الحق\",\"page\":55},{\"title\":\"خاتمة وتوصيات\",\"page\":88}]",
                     CategoryId = subBooksSolook.Id
                 },
                 new()
@@ -186,6 +195,9 @@ namespace abuzarelqalamony.Infrastructure.Data
                     PdfFilePath = "/uploads/books/ashab-al-himam.pdf",
                     CoverImagePath = "/uploads/books/covers/ashab-al-himam.jpg",
                     PublishDate = lastMonth.AddDays(10),
+                    PagesCount = 144,
+                    FileSizeInMB = 5.2,
+                    TableOfContentsJson = "[{\"title\":\"المقدمة\",\"page\":5},{\"title\":\"علو الهمة في ميزان الشرع\",\"page\":18},{\"title\":\"نماذج من همم السلف\",\"page\":45},{\"title\":\"عوائق الهمة وكيف نتجاوزها\",\"page\":80},{\"title\":\"خاتمة الهمم\",\"page\":130}]",
                     CategoryId = subBooksSolook.Id
                 },
                 new()
@@ -196,6 +208,9 @@ namespace abuzarelqalamony.Infrastructure.Data
                     PdfFilePath = "/uploads/books/3aleg-hoznak.pdf",
                     CoverImagePath = "/uploads/books/covers/3aleg-hoznak.jpg",
                     PublishDate = lastMonth.AddDays(15),
+                    PagesCount = 80,
+                    FileSizeInMB = 2.9,
+                    TableOfContentsJson = "[{\"title\":\"تمهيد\",\"page\":4},{\"title\":\"أسباب ضيق الصدور\",\"page\":15},{\"title\":\"أدعية تفريج الكروب من السنة\",\"page\":35},{\"title\":\"آيات السكينة والطمأنينة\",\"page\":58}]",
                     CategoryId = subBooksRaqaeq.Id
                 },
                 new()
@@ -206,6 +221,9 @@ namespace abuzarelqalamony.Infrastructure.Data
                     PdfFilePath = "/uploads/books/aslih-qalbak.pdf",
                     CoverImagePath = "/uploads/books/covers/aslih-qalbak.jpg",
                     PublishDate = thisMonthStart.AddDays(8),
+                    PagesCount = 112,
+                    FileSizeInMB = 4.1,
+                    TableOfContentsJson = "[{\"title\":\"المقدمة\",\"page\":5},{\"title\":\"صلاح القلب هو الأصل\",\"page\":20},{\"title\":\"أمراض القلوب الخفية\",\"page\":42},{\"title\":\"دواء القلوب في خلوات الليل\",\"page\":78},{\"title\":\"خاتمة الدعاء\",\"page\":105}]",
                     CategoryId = subBooksRaqaeq.Id
                 },
                 new()
@@ -216,6 +234,9 @@ namespace abuzarelqalamony.Infrastructure.Data
                     PdfFilePath = "/uploads/books/resala-ila-hayran.pdf",
                     CoverImagePath = "/uploads/books/covers/resala-ila-hayran.jpg",
                     PublishDate = lastMonth.AddDays(5),
+                    PagesCount = 64,
+                    FileSizeInMB = 2.4,
+                    TableOfContentsJson = "[{\"title\":\"رسالة من مشفق\",\"page\":4},{\"title\":\"لماذا نحتار والحق أبلج\",\"page\":18},{\"title\":\"كيف تسترد يقينك\",\"page\":38}]",
                     CategoryId = catBooksGeneral.Id
                 },
                 new()
@@ -226,6 +247,9 @@ namespace abuzarelqalamony.Infrastructure.Data
                     PdfFilePath = "/uploads/books/zad-al-saereen.pdf",
                     CoverImagePath = "/uploads/books/covers/zad-al-saereen.jpg",
                     PublishDate = lastMonth.AddDays(20),
+                    PagesCount = 160,
+                    FileSizeInMB = 6.0,
+                    TableOfContentsJson = "[{\"title\":\"زاد المسير\",\"page\":6},{\"title\":\"منزلة الصبر\",\"page\":30},{\"title\":\"منزلة الشكر\",\"page\":65},{\"title\":\"منزلة الرضا\",\"page\":110},{\"title\":\"الخاتمة\",\"page\":150}]",
                     CategoryId = subBooksSolook.Id
                 },
                 new()
@@ -236,6 +260,9 @@ namespace abuzarelqalamony.Infrastructure.Data
                     PdfFilePath = "/uploads/books/feqh-al-khoshoo.pdf",
                     CoverImagePath = "/uploads/books/covers/feqh-al-khoshoo.jpg",
                     PublishDate = thisMonthStart.AddDays(12),
+                    PagesCount = 135,
+                    FileSizeInMB = 4.5,
+                    TableOfContentsJson = "[{\"title\":\"أهمية الخشوع\",\"page\":5},{\"title\":\"أفعال الصلاة ومعانيها الباطنة\",\"page\":25},{\"title\":\"طرد وسواس الشيطان في الصلاة\",\"page\":70},{\"title\":\"أسرار سجود القرب\",\"page\":105}]",
                     CategoryId = subBooksFiqh.Id
                 },
                 new()
@@ -246,18 +273,38 @@ namespace abuzarelqalamony.Infrastructure.Data
                     PdfFilePath = null,
                     CoverImagePath = "/uploads/books/covers/al-mizan.jpg",
                     PublishDate = nextMonth.AddDays(15), // Scheduled (Future)
+                    PagesCount = 180,
+                    FileSizeInMB = 6.8,
+                    TableOfContentsJson = "[{\"title\":\"المقدمة والمنهج\",\"page\":5},{\"title\":\"الميزان الرباني\",\"page\":35},{\"title\":\"توازن الشخصية المسلمة\",\"page\":85},{\"title\":\"آفات الخروج عن الميزان\",\"page\":140}]",
                     CategoryId = subBooksSolook.Id
                 }
             };
 
             foreach (var book in books)
             {
-                if (!await context.Books.AnyAsync(b => b.Title == book.Title))
+                var existing = await context.Books.FirstOrDefaultAsync(b => b.Title == book.Title);
+                if (existing == null)
                 {
                     await context.Books.AddAsync(book);
                     addedBooks++;
                 }
+                else
+                {
+                    existing.PagesCount ??= book.PagesCount;
+                    existing.FileSizeInMB ??= book.FileSizeInMB;
+                    existing.TableOfContentsJson ??= book.TableOfContentsJson;
+                }
             }
+
+            // Also update any existing variant title containing "ففروا"
+            var allFafirruBooks = await context.Books.Where(b => b.Title.Contains("ففروا")).ToListAsync();
+            foreach (var b in allFafirruBooks)
+            {
+                b.PagesCount ??= 120;
+                b.FileSizeInMB ??= 4.8;
+                b.TableOfContentsJson ??= defaultTocJson;
+            }
+
             await context.SaveChangesAsync();
 
             // =========================================================================
@@ -685,13 +732,80 @@ namespace abuzarelqalamony.Infrastructure.Data
                 // SiteAlerts table might not have migration executed yet
             }
 
-            int totalAdded = addedUsers + addedCategories + addedBooks + addedLessons + addedSermons + addedArticles + addedAlerts;
-            if (totalAdded == 0)
+            // =========================================================================
+            // 9. Qurans (تلاوات وتدبر القرآن الكريم)
+            // =========================================================================
+            try
             {
-                return "جميع البيانات الإسلامية (الكتب، الدروس، الخطب، المقالات، التصنيفات) موجودة بالفعل في قاعدة البيانات.";
+                var quranRecitations = new List<Quran>
+                {
+                    new()
+                    {
+                        Title = "تلاوة خاشعة وتدبر لسورة الكهف كاملة",
+                        Description = "تلاوة ندية مرتلة لسورة الكهف مع وقفات تدبرية لآيات النجاة من الفتن.",
+                        SurahNumber = 18,
+                        SurahName = "الكهف",
+                        DurationInMinutes = 35,
+                        AudioFilePath = "/uploads/quran/surah-kahf.mp3",
+                        PublishDate = thisMonthStart.AddDays(1),
+                        CategoryId = subQuranKahf.Id
+                    },
+                    new()
+                    {
+                        Title = "تلاوة لما تيسر من سورة النبأ والنازعات",
+                        Description = "قراءة عطرة وتدبر في أهوال يوم القيامة ودلائل قدرة الله عز وجل في سورتي النبأ والنازعات.",
+                        SurahNumber = 78,
+                        SurahName = "النبأ",
+                        DurationInMinutes = 20,
+                        AudioFilePath = "/uploads/quran/surah-naba.mp3",
+                        PublishDate = thisMonthStart.AddDays(5),
+                        CategoryId = subQuranAmma.Id
+                    },
+                    new()
+                    {
+                        Title = "تلاوة خاشعة لآيات من سورة مريم",
+                        Description = "تلاوة من سورة مريم في قصة زكريا ويحيى وعيسى عليهم السلام واستحضار معاني الرحمة الإلهية.",
+                        SurahNumber = 19,
+                        SurahName = "مريم",
+                        DurationInMinutes = 25,
+                        AudioFilePath = "/uploads/quran/surah-maryam.mp3",
+                        PublishDate = lastMonth.AddDays(10),
+                        CategoryId = catQuranMain.Id
+                    },
+                    new()
+                    {
+                        Title = "تلاوة وتدبر سورتي الفجر والبلد",
+                        Description = "تلاوة عطرة مع وقفات إيمانية من قصار السور من جزء عم.",
+                        SurahNumber = 89,
+                        SurahName = "الفجر",
+                        DurationInMinutes = 15,
+                        AudioFilePath = "/uploads/quran/surah-fajr.mp3",
+                        PublishDate = thisMonthStart.AddDays(12),
+                        CategoryId = subQuranAmma.Id
+                    }
+                };
+
+                foreach (var q in quranRecitations)
+                {
+                    if (!await context.Qurans.AnyAsync(item => item.Title == q.Title))
+                    {
+                        await context.Qurans.AddAsync(q);
+                        addedQurans++;
+                    }
+                }
+                await context.SaveChangesAsync();
+            }
+            catch
+            {
             }
 
-            return $"تمت إضافة البيانات بنجاح: {addedCategories} تصنيف، {addedBooks} كتاب، {addedLessons} درس، {addedSermons} خطبة، {addedArticles} مقال، {addedAlerts} تنبيه، {addedUsers} مستخدم.";
+            int totalAdded = addedUsers + addedCategories + addedBooks + addedLessons + addedSermons + addedArticles + addedAlerts + addedQurans;
+            if (totalAdded == 0)
+            {
+                return "جميع البيانات الإسلامية (الكتب، الدروس، الخطب، المقالات، القرآن الكريم، والتصنيفات) موجودة بالفعل في قاعدة البيانات.";
+            }
+
+            return $"تمت إضافة البيانات بنجاح: {addedCategories} تصنيف، {addedBooks} كتاب، {addedLessons} درس، {addedSermons} خطبة، {addedArticles} مقال، {addedQurans} مقطع قرآن كريم، {addedAlerts} تنبيه، {addedUsers} مستخدم.";
         }
     }
 }

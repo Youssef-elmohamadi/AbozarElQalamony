@@ -83,12 +83,21 @@ namespace abuzarelqalamony.Infrastructure.Migrations
                         .HasMaxLength(4000)
                         .HasColumnType("nvarchar(4000)");
 
+                    b.Property<double?>("FileSizeInMB")
+                        .HasColumnType("float");
+
+                    b.Property<int?>("PagesCount")
+                        .HasColumnType("int");
+
                     b.Property<string>("PdfFilePath")
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
                     b.Property<DateTime?>("PublishDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("TableOfContentsJson")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -179,6 +188,61 @@ namespace abuzarelqalamony.Infrastructure.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Lessons");
+                });
+
+            modelBuilder.Entity("abuzarelqalamony.Domain.Entities.Quran", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AudioFilePath")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(4000)
+                        .HasColumnType("nvarchar(4000)");
+
+                    b.Property<int?>("DurationInMinutes")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("PublishDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("SurahName")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int?>("SurahNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ThumbnailPath")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("VideoFilePath")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Qurans");
                 });
 
             modelBuilder.Entity("abuzarelqalamony.Domain.Entities.Role", b =>
@@ -346,6 +410,17 @@ namespace abuzarelqalamony.Infrastructure.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("abuzarelqalamony.Domain.Entities.Quran", b =>
+                {
+                    b.HasOne("abuzarelqalamony.Domain.Entities.Category", "Category")
+                        .WithMany("Qurans")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("abuzarelqalamony.Domain.Entities.Sermon", b =>
                 {
                     b.HasOne("abuzarelqalamony.Domain.Entities.Category", "Category")
@@ -375,6 +450,8 @@ namespace abuzarelqalamony.Infrastructure.Migrations
                     b.Navigation("Children");
 
                     b.Navigation("Lessons");
+
+                    b.Navigation("Qurans");
 
                     b.Navigation("Sermons");
                 });

@@ -26,7 +26,14 @@ export async function deleteLessonAction(id: number | string) {
     await deleteLesson(id);
 
     revalidateTag("lessons-list");
+    revalidateTag("lessons");
     revalidateTag(`lesson-${id}`);
+    revalidateTag("public-home");
+    revalidateTag("search");
+    revalidatePath("/");
+    revalidatePath("/lessons");
+    revalidatePath(`/lessons/${id}`);
+    revalidatePath("/search");
     revalidatePath("/admin/lessons");
 
     return {
@@ -58,6 +65,12 @@ export async function createLessonAction(formData: FormData) {
     const res = await createLesson(formData);
 
     revalidateTag("lessons-list");
+    revalidateTag("lessons");
+    revalidateTag("public-home");
+    revalidateTag("search");
+    revalidatePath("/");
+    revalidatePath("/lessons");
+    revalidatePath("/search");
     revalidatePath("/admin/lessons");
 
     return {
@@ -92,7 +105,14 @@ export async function updateLessonAction(id: number | string, formData: FormData
     const res = await updateLesson(id, formData);
 
     revalidateTag("lessons-list");
+    revalidateTag("lessons");
     revalidateTag(`lesson-${id}`);
+    revalidateTag("public-home");
+    revalidateTag("search");
+    revalidatePath("/");
+    revalidatePath("/lessons");
+    revalidatePath(`/lessons/${id}`);
+    revalidatePath("/search");
     revalidatePath("/admin/lessons");
     revalidatePath(`/admin/lessons/${id}`);
     revalidatePath(`/admin/lessons/${id}/edit`);
@@ -127,11 +147,19 @@ export async function updateLessonAction(id: number | string, formData: FormData
 export async function revalidateLessonsCacheAction(lessonId?: number | string) {
   try {
     revalidateTag("lessons-list");
+    revalidateTag("lessons");
+    revalidatePath("/");
+    revalidatePath("/lessons");
     revalidatePath("/admin/lessons");
     if (lessonId) {
       revalidateTag(`lesson-${lessonId}`);
+      revalidateTag("lessons-list");
+      revalidateTag("lessons");
+      revalidateTag("public-home");
+      revalidatePath("/");
       revalidatePath(`/admin/lessons/${lessonId}`);
       revalidatePath(`/admin/lessons/${lessonId}/edit`);
+      revalidatePath(`/lessons/${lessonId}`);
     }
     return { success: true };
   } catch (err) {

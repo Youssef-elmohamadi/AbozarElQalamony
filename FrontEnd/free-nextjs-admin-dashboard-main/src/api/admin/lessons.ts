@@ -50,7 +50,10 @@ export const getLessons = async (
       BASE_URL,
       `/api/lessons?${params.toString()}`,
       {
-        cache: "no-store",
+        next: {
+          revalidate: 86400,
+          tags: ["lessons", "lessons-list"],
+        },
       },
       "admin_token"
     );
@@ -70,7 +73,10 @@ export const getLessonById = async (id: number | string) => {
       BASE_URL,
       `/api/lessons/${id}`,
       {
-        cache: "no-store",
+        next: {
+          revalidate: 86400,
+          tags: ["lessons", "lessons-list", `lesson-${id}`],
+        },
       },
       "admin_token"
     );

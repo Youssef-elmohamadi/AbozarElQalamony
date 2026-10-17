@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace abuzarelqalamony.Application.DTOs.Articles
 {
@@ -40,6 +40,12 @@ namespace abuzarelqalamony.Application.DTOs.Articles
 
         [Range(1, 100, ErrorMessage = "PageSize must be between 1 and 100.")]
         public int PageSize { get; set; } = 10;
+
+        public string? Title { get; set; }
+
+        public string? Search { get; set; }
+
+        public string? Sort { get; set; }
     }
 
 

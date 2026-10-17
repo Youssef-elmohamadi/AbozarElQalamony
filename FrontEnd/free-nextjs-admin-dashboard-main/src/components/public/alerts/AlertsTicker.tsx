@@ -79,13 +79,25 @@ export default function AlertsTicker({ alerts = [] }: AlertsTickerProps) {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [modalOpen]);
 
+  // إيقاف التمرير في الصفحة الخلفية عند فتح المودال
+  useEffect(() => {
+    if (modalOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [modalOpen]);
+
   if (!currentAlert || total === 0) return null;
 
   const isUrgent = Boolean(
     currentAlert.isUrgent ||
-      currentAlert.priority === "urgent" ||
-      currentAlert.priority === "high" ||
-      currentAlert.title.includes("عاجل")
+    currentAlert.priority === "urgent" ||
+    currentAlert.priority === "high" ||
+    currentAlert.title.includes("عاجل")
   );
 
   return (
@@ -98,22 +110,20 @@ export default function AlertsTicker({ alerts = [] }: AlertsTickerProps) {
         onMouseLeave={() => setIsPaused(false)}
         onFocus={() => setIsPaused(true)}
         onBlur={() => setIsPaused(false)}
-        className={`relative w-full rounded-2xl border p-4 sm:p-5 transition-all select-none shadow-xs ${
-          isUrgent
+        className={`relative w-full rounded-2xl border p-4 sm:p-5 transition-all select-none shadow-xs ${isUrgent
             ? "bg-[#FAF1EC] border-[#E8D0C2] text-[#6D2F17]"
             : "bg-[#FAF6EE] border-[#DFD7C5] text-[#2A341E]"
-        }`}
+          }`}
       >
         {/* Top Header Row: Megaphone + Badge + Title + Controls */}
         <div className="flex items-center justify-between gap-3 pb-3 border-b border-[#ECE4D4]/90">
           <div className="flex items-center gap-2.5 sm:gap-3 flex-wrap min-w-0 flex-1">
             {/* Megaphone Icon */}
             <div
-              className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${
-                isUrgent
+              className={`w-8 h-8 rounded-xl flex items-center justify-center shrink-0 ${isUrgent
                   ? "bg-[#C0673F] text-white"
                   : "bg-[#2A341E] text-[#FAFAF5]"
-              }`}
+                }`}
               aria-hidden="true"
             >
               <svg
@@ -133,11 +143,10 @@ export default function AlertsTicker({ alerts = [] }: AlertsTickerProps) {
 
             {/* Badge: "تنبيه من فضيلة الشيخ" */}
             <span
-              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold shrink-0 shadow-2xs ${
-                isUrgent
+              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold shrink-0 shadow-2xs ${isUrgent
                   ? "bg-[#C0673F] text-white"
                   : "bg-[#2A341E] text-[#FAFAF5]"
-              }`}
+                }`}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-[#E5B59D]" />
               <span>تنبيه من فضيلة الشيخ</span>
@@ -208,9 +217,8 @@ export default function AlertsTicker({ alerts = [] }: AlertsTickerProps) {
 
         {/* Content Row: Showing 2 lines of the alert body with "عرض المزيد" */}
         <div
-          className={`pt-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-right transition-all duration-300 ${
-            animating ? "opacity-30 translate-x-1" : "opacity-100 translate-x-0"
-          }`}
+          className={`pt-3 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-right transition-all duration-300 ${animating ? "opacity-30 translate-x-1" : "opacity-100 translate-x-0"
+            }`}
           aria-live={isManual ? "polite" : "off"}
         >
           <p className="text-xs sm:text-[13.5px] text-[#4B533E] leading-relaxed line-clamp-2 flex-1">
@@ -248,11 +256,10 @@ export default function AlertsTicker({ alerts = [] }: AlertsTickerProps) {
               <div className="flex items-start justify-between gap-3 border-b border-[#E3DAC8]/90 pb-4">
                 <div className="flex items-center gap-3">
                   <div
-                    className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${
-                      isUrgent
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center shrink-0 ${isUrgent
                         ? "bg-[#C0673F] text-white"
                         : "bg-[#2A341E] text-[#FAFAF5]"
-                    }`}
+                      }`}
                   >
                     <svg
                       className="w-5 h-5"
@@ -270,11 +277,10 @@ export default function AlertsTicker({ alerts = [] }: AlertsTickerProps) {
                   </div>
                   <div>
                     <span
-                      className={`inline-block px-2.5 py-0.5 rounded-md text-[10.5px] font-bold ${
-                        isUrgent
+                      className={`inline-block px-2.5 py-0.5 rounded-md text-[10.5px] font-bold ${isUrgent
                           ? "bg-[#C0673F] text-white"
                           : "bg-[#2A341E] text-white"
-                      }`}
+                        }`}
                     >
                       تنبيه من فضيلة الشيخ
                     </span>
@@ -320,11 +326,11 @@ export default function AlertsTicker({ alerts = [] }: AlertsTickerProps) {
                 <span className="font-medium text-[#7A836D]">
                   {currentAlert.createdAt
                     ? new Date(currentAlert.createdAt).toLocaleDateString("ar-EG", {
-                        weekday: "long",
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })
                     : "تنبيه رسمي"}
                 </span>
 

@@ -50,9 +50,9 @@ export const getSermons = async (
       `/api/sermons?${params.toString()}`,
       {
         next: {
-          tags: ["sermons-list", `sermons-list-${categoryId}`],
+          tags: ["sermons", "sermons-list"],
 
-          revalidate: 3600 * 24,
+          revalidate: 86400,
         },
       },
       "admin_token"
@@ -74,8 +74,8 @@ export const getSermonById = async (id: number | string) => {
       `/api/sermons/${id}`,
       {
         next: {
-          tags: ["sermon", `sermon-${id}`, "sermons-list"],
-          revalidate: 3600 * 24,
+          tags: ["sermons", "sermons-list", `sermon-${id}`],
+          revalidate: 86400,
         },
       },
       "admin_token"

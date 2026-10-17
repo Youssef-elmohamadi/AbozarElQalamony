@@ -31,7 +31,13 @@ export async function deleteArticleAction(id: number | string) {
 
     revalidateTag("articles-list");
     revalidateTag(`article-${id}`);
+    revalidateTag("public-home");
+    revalidatePath("/");
     revalidatePath("/admin/articles");
+    revalidatePath("/articles");
+    revalidatePath(`/articles/${id}`);
+    revalidatePath("/search");
+
 
     return {
       success: true,
@@ -62,7 +68,11 @@ export async function createArticleAction(data: CreateArticleInput) {
     const res = await createArticle(data);
 
     revalidateTag("articles-list");
+    revalidateTag("public-home");
+    revalidatePath("/");
     revalidatePath("/admin/articles");
+    revalidatePath("/articles");
+    revalidatePath("/search");
 
     return {
       success: true,
@@ -103,7 +113,12 @@ export async function updateArticleAction(
 
     revalidateTag("articles-list");
     revalidateTag(`article-${id}`);
+    revalidateTag("public-home");
+    revalidatePath("/");
     revalidatePath("/admin/articles");
+    revalidatePath("/articles");
+    revalidatePath(`/articles/${id}`);
+    revalidatePath("/search");
 
     return {
       success: true,

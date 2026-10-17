@@ -27,8 +27,16 @@ export async function deleteSermonAction(id: number | string) {
     await deleteSermon(id);
 
     revalidateTag("sermons-list");
+    revalidateTag("sermons");
     revalidateTag(`sermon-${id}`);
+    revalidateTag("public-home");
+    revalidateTag("search");
+    revalidatePath("/");
+    revalidatePath("/sermons");
+    revalidatePath(`/sermons/${id}`);
+    revalidatePath("/search");
     revalidatePath("/admin/sermons");
+
 
     return {
       success: true,
@@ -57,9 +65,15 @@ export async function deleteSermonAction(id: number | string) {
 export async function createSermonAction(formData: FormData) {
   try {
     const res = await createSermon(formData);
-
     revalidateTag("sermons-list");
+    revalidateTag("sermons");
+    revalidateTag("public-home");
+    revalidateTag("search");
+    revalidatePath("/");
+    revalidatePath("/sermons");
+    revalidatePath("/search");
     revalidatePath("/admin/sermons");
+
 
     return {
       success: true,
@@ -93,7 +107,14 @@ export async function updateSermonAction(id: number | string, formData: FormData
     const res = await updateSermon(id, formData);
 
     revalidateTag("sermons-list");
+    revalidateTag("sermons");
     revalidateTag(`sermon-${id}`);
+    revalidateTag("public-home");
+    revalidateTag("search");
+    revalidatePath("/");
+    revalidatePath("/sermons");
+    revalidatePath(`/sermons/${id}`);
+    revalidatePath("/search");
     revalidatePath("/admin/sermons");
     revalidatePath(`/admin/sermons/${id}`);
     revalidatePath(`/admin/sermons/${id}/edit`);
@@ -128,11 +149,19 @@ export async function updateSermonAction(id: number | string, formData: FormData
 export async function revalidateSermonsCacheAction(sermonId?: number | string) {
   try {
     revalidateTag("sermons-list");
+    revalidateTag("sermons");
+    revalidatePath("/");
+    revalidatePath("/sermons");
     revalidatePath("/admin/sermons");
     if (sermonId) {
       revalidateTag(`sermon-${sermonId}`);
+      revalidateTag("sermons-list");
+      revalidateTag("sermons");
+      revalidateTag("public-home");
+      revalidatePath("/");
       revalidatePath(`/admin/sermons/${sermonId}`);
       revalidatePath(`/admin/sermons/${sermonId}/edit`);
+      revalidatePath(`/sermons/${sermonId}`);
     }
     return { success: true };
   } catch (err) {

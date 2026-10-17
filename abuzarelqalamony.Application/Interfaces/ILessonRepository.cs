@@ -11,6 +11,7 @@ namespace abuzarelqalamony.Application.Interfaces
             string? categoryName = null,
             string? title = null,
             string? search = null,
+            string? sort = null,
             CancellationToken ct = default);
 
         Task<(IReadOnlyList<Lesson> Items, int TotalCount)> GetPagedByCategoryIdAsync(
@@ -18,6 +19,7 @@ namespace abuzarelqalamony.Application.Interfaces
             int page,
             int pageSize,
             string? search = null,
+            string? sort = null,
             CancellationToken ct = default);
         Task<Lesson?> GetByIdAsync(int id, CancellationToken ct = default);
         Task<Lesson> AddAsync(Lesson lesson, CancellationToken ct = default);

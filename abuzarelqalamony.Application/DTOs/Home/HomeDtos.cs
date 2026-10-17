@@ -19,6 +19,7 @@ namespace abuzarelqalamony.Application.DTOs.Home
         public int LessonsCount { get; set; }
         public int SermonsCount { get; set; }
         public int BooksCount { get; set; }
+        public int QuranCount { get; set; }
         public int TotalContentCount { get; set; }
     }
 

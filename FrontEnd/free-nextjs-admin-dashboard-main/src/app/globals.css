@@ -305,6 +305,29 @@
   background-color: #344054;
 }
 
+@utility menu-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #C0673F #FAF4EC;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: #F4F6F0;
+    border-radius: 9999px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #C5CCA8;
+    border-radius: 9999px;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #AAB585;
+  }
+}
+
 
 
 @layer utilities {

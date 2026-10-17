@@ -53,7 +53,10 @@ export const getBooks = async (
       BASE_URL,
       `/api/books?${params.toString()}`,
       {
-        cache: "no-store",
+        next: {
+          tags: ["books", "books-list"],
+          revalidate: 86400,
+        },
       },
       "admin_token"
     );

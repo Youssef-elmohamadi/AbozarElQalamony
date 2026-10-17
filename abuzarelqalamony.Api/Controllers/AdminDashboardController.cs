@@ -1,4 +1,4 @@
-﻿using abuzarelqalamony.Application.Common;
+using abuzarelqalamony.Application.Common;
 using abuzarelqalamony.Application.DTOs.Dashboard;
 using abuzarelqalamony.Infrastructure.Data;
 using Microsoft.AspNetCore.Authorization;
@@ -58,7 +58,7 @@ namespace abuzarelqalamony.Api.Controllers
 
                 var totalCategoriesTask = RunQueryAsync(db => db.Categories.CountAsync(ct));
                 var emptyCategoriesTask = RunQueryAsync(db => db.Categories
-                    .CountAsync(c => !c.Books.Any() && !c.Lessons.Any() && !c.Sermons.Any(), ct));
+                    .CountAsync(c => !c.Books.Any() && !c.Lessons.Any() && !c.Sermons.Any() && !c.Qurans.Any(), ct));
                 var totalBooksTask = RunQueryAsync(db => db.Books.CountAsync(ct));
                 var totalLessonsTask = RunQueryAsync(db => db.Lessons.CountAsync(ct));
                 var totalSermonsTask = RunQueryAsync(db => db.Sermons.CountAsync(ct));

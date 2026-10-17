@@ -18,6 +18,10 @@ namespace abuzarelqalamony.Application.DTOs.Books
 
         public DateTime? PublishDate { get; set; }
 
+        public int? PagesCount { get; set; }
+        public double? FileSizeInMB { get; set; }
+        public string? TableOfContentsJson { get; set; }
+
         [Required(ErrorMessage = "CategoryId is required.")]
         public int CategoryId { get; set; }
 
@@ -39,6 +43,10 @@ namespace abuzarelqalamony.Application.DTOs.Books
         public string? Description { get; set; }
 
         public DateTime? PublishDate { get; set; }
+
+        public int? PagesCount { get; set; }
+        public double? FileSizeInMB { get; set; }
+        public string? TableOfContentsJson { get; set; }
 
         [Required(ErrorMessage = "CategoryId is required.")]
         public int CategoryId { get; set; }
@@ -66,6 +74,8 @@ namespace abuzarelqalamony.Application.DTOs.Books
         public string? AuthorName { get; set; }
 
         public string? Search { get; set; }
+
+        public string? Sort { get; set; }
     }
 
     public class BookResponseDto
@@ -78,6 +88,10 @@ namespace abuzarelqalamony.Application.DTOs.Books
         public string? CoverImagePath { get; set; }
         public DateTime? PublishDate { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public int? PagesCount { get; set; }
+        public double? FileSizeInMB { get; set; }
+        public string? TableOfContentsJson { get; set; }
 
         public int CategoryId { get; set; }
         public string CategoryName { get; set; } = string.Empty;

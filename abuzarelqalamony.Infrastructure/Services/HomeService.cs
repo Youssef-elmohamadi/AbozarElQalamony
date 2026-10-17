@@ -28,7 +28,8 @@ namespace abuzarelqalamony.Infrastructure.Services
         {
             try
             {
-                var now = DateTime.UtcNow;
+                // End of today UTC (or now + 1 day) to ensure items published on today's calendar date appear immediately regardless of local timezone differences
+                var now = DateTime.UtcNow.Date.AddDays(1).AddTicks(-1);
 
                 // 1. أكثر التصنيفات محتوى (Categories with most content)
                 var allCategoriesRaw = await _context.Categories
@@ -42,7 +43,8 @@ namespace abuzarelqalamony.Infrastructure.Services
                         ParentName = c.Parent != null ? c.Parent.Name : null,
                         DirectLessons = c.Lessons.Count(l => l.PublishDate == null || l.PublishDate <= now),
                         DirectSermons = c.Sermons.Count(s => s.PublishDate == null || s.PublishDate <= now),
-                        DirectBooks = c.Books.Count(b => b.PublishDate == null || b.PublishDate <= now)
+                        DirectBooks = c.Books.Count(b => b.PublishDate == null || b.PublishDate <= now),
+                        DirectQuran = c.Qurans.Count(q => q.PublishDate == null || q.PublishDate <= now)
                     })
                     .ToListAsync(ct);
 
@@ -57,6 +59,7 @@ namespace abuzarelqalamony.Infrastructure.Services
                     var lessonsCount = c.DirectLessons + (childCategories?.Sum(ch => ch.DirectLessons) ?? 0);
                     var sermonsCount = c.DirectSermons + (childCategories?.Sum(ch => ch.DirectSermons) ?? 0);
                     var booksCount = c.DirectBooks + (childCategories?.Sum(ch => ch.DirectBooks) ?? 0);
+                    var quranCount = c.DirectQuran + (childCategories?.Sum(ch => ch.DirectQuran) ?? 0);
 
                     return new HomeCategoryDto
                     {
@@ -69,7 +72,8 @@ namespace abuzarelqalamony.Infrastructure.Services
                         LessonsCount = lessonsCount,
                         SermonsCount = sermonsCount,
                         BooksCount = booksCount,
-                        TotalContentCount = lessonsCount + sermonsCount + booksCount
+                        QuranCount = quranCount,
+                        TotalContentCount = lessonsCount + sermonsCount + booksCount + quranCount
                     };
                 })
                 .Where(c => c.TotalContentCount > 0)
@@ -99,6 +103,11 @@ namespace abuzarelqalamony.Infrastructure.Services
                         CategoryName = l.Category != null ? l.Category.Name : string.Empty
                     })
                     .ToListAsync(ct);
+
+                _logger.LogInformation("HomeService: now={Now}, total Lessons in db={TotalCount}, latest count with filter={FilteredCount}", 
+                    now, 
+                    await _context.Lessons.CountAsync(ct), 
+                    latestLessons.Count);
 
                 // 3. أحدث الخطب (Latest Sermons)
                 var latestSermons = await _context.Sermons
@@ -139,6 +148,9 @@ namespace abuzarelqalamony.Infrastructure.Services
                         CoverImagePath = b.CoverImagePath,
                         PublishDate = b.PublishDate,
                         CreatedAt = b.CreatedAt,
+                        PagesCount = b.PagesCount,
+                        FileSizeInMB = b.FileSizeInMB,
+                        TableOfContentsJson = b.TableOfContentsJson,
                         CategoryId = b.CategoryId,
                         CategoryName = b.Category != null ? b.Category.Name : string.Empty
                     })

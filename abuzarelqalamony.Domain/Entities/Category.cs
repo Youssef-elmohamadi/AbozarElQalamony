@@ -1,4 +1,4 @@
-﻿using abuzarelqalamony.Domain.Enums;
+using abuzarelqalamony.Domain.Enums;
 
 namespace abuzarelqalamony.Domain.Entities
 {
@@ -15,5 +15,6 @@ namespace abuzarelqalamony.Domain.Entities
         public ICollection<Book> Books { get; set; } = new List<Book>();
         public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
         public ICollection<Sermon> Sermons { get; set; } = new List<Sermon>();
+        public ICollection<Quran> Qurans { get; set; } = new List<Quran>();
     }
 }

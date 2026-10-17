@@ -35,6 +35,7 @@ namespace abuzarelqalamony.Infrastructure.Services
                 query.CategoryName,
                 title,
                 query.Search,
+                query.Sort,
                 ct);
 
             var dtos = items.Select(MapToDto).ToList();
@@ -56,7 +57,7 @@ namespace abuzarelqalamony.Infrastructure.Services
                 : (!string.IsNullOrWhiteSpace(query.Name) ? query.Name : query.Search);
 
             var (items, totalCount) = await _sermonRepository.GetPagedByCategoryIdAsync(
-                categoryId, query.Page, query.PageSize, searchTerm, ct);
+                categoryId, query.Page, query.PageSize, searchTerm, query.Sort, ct);
 
             var dtos = items.Select(MapToDto).ToList();
             var paged = PagedResult<SermonResponseDto>.Create(dtos, totalCount, query.Page, query.PageSize);
