@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import type { Category } from "@/api/public/categories";
+import Link from "next/link";
 
 interface PublicHeaderProps {
   categories: Category[];
