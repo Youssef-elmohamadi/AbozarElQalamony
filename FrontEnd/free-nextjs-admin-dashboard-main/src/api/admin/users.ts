@@ -3,7 +3,9 @@ import { apiFetch, ApiError } from "../Config";
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
 
 const isRedirect = (error: any) =>
-  typeof error?.digest === "string" && error.digest.startsWith("NEXT_REDIRECT");
+  typeof error?.digest === "string" &&
+  (error.digest.startsWith("NEXT_REDIRECT") ||
+    error.digest === "DYNAMIC_SERVER_USAGE");
 
 export const getUsers = async (
   page: number = 1,
