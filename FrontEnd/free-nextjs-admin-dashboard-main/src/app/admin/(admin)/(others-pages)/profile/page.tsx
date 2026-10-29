@@ -13,7 +13,12 @@ export default async function ProfilePage() {
   try {
     initialUser = await getProfile();
   } catch (error: any) {
-    if (error?.digest?.startsWith("NEXT_REDIRECT")) throw error;
+    if (
+      error?.digest === "DYNAMIC_SERVER_USAGE" ||
+      error?.digest?.startsWith("NEXT_REDIRECT")
+    ) {
+      throw error;
+    }
     console.error("Profile page load error:", error?.message);
   }
 
