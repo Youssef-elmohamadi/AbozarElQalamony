@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: LessonDetailsPageProps): Prom
         description: lesson.description || "معاينة تفاصيل الدرس",
       };
     }
-  } catch {}
+  } catch { }
   return {
     title: "معاينة الدرس | لوحة التحكم",
   };
@@ -51,7 +51,7 @@ export default async function LessonDetailsPage({ params }: LessonDetailsPagePro
   const getMediaUrl = (path: string | null | undefined) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
     return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
   };
 

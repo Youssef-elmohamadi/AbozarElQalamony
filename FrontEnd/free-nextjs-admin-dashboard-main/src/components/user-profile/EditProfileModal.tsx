@@ -224,9 +224,8 @@ export default function EditProfileModal({
   const existingAvatarUrl = user?.profileImagePath
     ? user.profileImagePath.startsWith("http")
       ? user.profileImagePath
-      : `${process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281"}${
-          user.profileImagePath.startsWith("/") ? "" : "/"
-        }${user.profileImagePath}`
+      : `${process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com"}${user.profileImagePath.startsWith("/") ? "" : "/"
+      }${user.profileImagePath}`
     : null;
 
   return (
@@ -369,11 +368,10 @@ export default function EditProfileModal({
                     setName(e.target.value);
                     if (errors.name) setErrors((prev) => ({ ...prev, name: "" }));
                   }}
-                  className={`w-full h-11 pr-10 pl-4 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 focus:outline-hidden text-right dark:bg-gray-800/60 dark:text-white transition-colors ${
-                    errors.name
+                  className={`w-full h-11 pr-10 pl-4 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 focus:outline-hidden text-right dark:bg-gray-800/60 dark:text-white transition-colors ${errors.name
                       ? "border-red-400 bg-red-50/20 focus:border-red-500"
                       : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] dark:border-gray-700"
-                  }`}
+                    }`}
                   placeholder="أدخل اسمك الكامل"
                 />
               </div>
@@ -397,11 +395,10 @@ export default function EditProfileModal({
                     setEmail(e.target.value);
                     if (errors.email) setErrors((prev) => ({ ...prev, email: "" }));
                   }}
-                  className={`w-full h-11 pr-10 pl-4 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 focus:outline-hidden text-right dark:bg-gray-800/60 dark:text-white transition-colors ${
-                    errors.email
+                  className={`w-full h-11 pr-10 pl-4 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 focus:outline-hidden text-right dark:bg-gray-800/60 dark:text-white transition-colors ${errors.email
                       ? "border-red-400 bg-red-50/20 focus:border-red-500"
                       : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] dark:border-gray-700"
-                  }`}
+                    }`}
                   placeholder="example@domain.com"
                 />
               </div>
@@ -433,11 +430,10 @@ export default function EditProfileModal({
                   if (errors.currentPassword)
                     setErrors((prev) => ({ ...prev, currentPassword: "" }));
                 }}
-                className={`w-full h-11 pr-4 pl-11 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 focus:outline-hidden text-right dark:bg-gray-800/60 dark:text-white transition-colors ${
-                  errors.currentPassword
+                className={`w-full h-11 pr-4 pl-11 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 focus:outline-hidden text-right dark:bg-gray-800/60 dark:text-white transition-colors ${errors.currentPassword
                     ? "border-red-400 bg-red-50/20 focus:border-red-500"
                     : "border-gray-300 bg-white focus:border-[#3F4A2B] dark:border-gray-700"
-                }`}
+                  }`}
               />
               <button
                 type="button"
@@ -485,11 +481,10 @@ export default function EditProfileModal({
                       if (errors.newPassword)
                         setErrors((prev) => ({ ...prev, newPassword: "" }));
                     }}
-                    className={`w-full h-11 pr-4 pl-11 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 focus:outline-hidden text-right dark:bg-gray-800/60 dark:text-white transition-colors ${
-                      errors.newPassword
+                    className={`w-full h-11 pr-4 pl-11 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 focus:outline-hidden text-right dark:bg-gray-800/60 dark:text-white transition-colors ${errors.newPassword
                         ? "border-red-400 bg-red-50/20 focus:border-red-500"
                         : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] dark:border-gray-700"
-                    }`}
+                      }`}
                   />
                   <button
                     type="button"
@@ -525,11 +520,10 @@ export default function EditProfileModal({
                       if (errors.confirmNewPassword)
                         setErrors((prev) => ({ ...prev, confirmNewPassword: "" }));
                     }}
-                    className={`w-full h-11 pr-4 pl-11 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 focus:outline-hidden text-right dark:bg-gray-800/60 dark:text-white transition-colors ${
-                      errors.confirmNewPassword
+                    className={`w-full h-11 pr-4 pl-11 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 focus:outline-hidden text-right dark:bg-gray-800/60 dark:text-white transition-colors ${errors.confirmNewPassword
                         ? "border-red-400 bg-red-50/20 focus:border-red-500"
                         : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] dark:border-gray-700"
-                    }`}
+                      }`}
                   />
                   <button
                     type="button"

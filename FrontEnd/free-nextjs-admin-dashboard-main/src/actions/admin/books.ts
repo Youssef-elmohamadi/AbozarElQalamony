@@ -27,8 +27,16 @@ export async function deleteBookAction(id: number | string) {
     await deleteBook(id);
 
     revalidateTag("books-list");
+    revalidateTag("books");
     revalidateTag(`book-${id}`);
+    revalidateTag("public-home")
+    revalidateTag("search")
+    revalidatePath("/")
+    revalidatePath("/books")
+    revalidatePath(`/books/${id}`)
+    revalidatePath("/search")
     revalidatePath("/admin/books");
+
 
     return {
       success: true,
@@ -59,6 +67,12 @@ export async function createBookAction(formData: FormData) {
     const res = await createBook(formData);
 
     revalidateTag("books-list");
+    revalidateTag("books");
+    revalidateTag("public-home")
+    revalidateTag("search")
+    revalidatePath("/")
+    revalidatePath("/books")
+    revalidatePath("/search")
     revalidatePath("/admin/books");
 
     return {
@@ -93,11 +107,17 @@ export async function updateBookAction(id: number | string, formData: FormData) 
     const res = await updateBook(id, formData);
 
     revalidateTag("books-list");
+    revalidateTag("books");
     revalidateTag(`book-${id}`);
+    revalidateTag("public-home");
+    revalidateTag("search");
+    revalidatePath("/");
+    revalidatePath("/books");
+    revalidatePath(`/books/${id}`);
+    revalidatePath("/search");
     revalidatePath("/admin/books");
     revalidatePath(`/admin/books/${id}`);
     revalidatePath(`/admin/books/${id}/edit`);
-
     return {
       success: true,
       message: "تم حفظ تعديلات الكتاب بنجاح",
@@ -128,11 +148,19 @@ export async function updateBookAction(id: number | string, formData: FormData) 
 export async function revalidateBooksCacheAction(bookId?: number | string) {
   try {
     revalidateTag("books-list");
+    revalidateTag("books");
+    revalidatePath("/");
+    revalidatePath("/books");
     revalidatePath("/admin/books");
     if (bookId) {
       revalidateTag(`book-${bookId}`);
+      revalidateTag("books-list");
+      revalidateTag("books");
+      revalidateTag("public-home");
+      revalidatePath("/");
       revalidatePath(`/admin/books/${bookId}`);
       revalidatePath(`/admin/books/${bookId}/edit`);
+      revalidatePath(`/books/${bookId}`);
     }
     return { success: true };
   } catch (err) {

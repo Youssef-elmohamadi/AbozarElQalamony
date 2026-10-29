@@ -42,9 +42,8 @@ export default function UserDropdown() {
   const avatarUrl = user?.profileImagePath
     ? user.profileImagePath.startsWith("http")
       ? user.profileImagePath
-      : `${process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281"}${
-          user.profileImagePath.startsWith("/") ? "" : "/"
-        }${user.profileImagePath}`
+      : `${process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com"}${user.profileImagePath.startsWith("/") ? "" : "/"
+      }${user.profileImagePath}`
     : null;
 
   const initials = user?.name ? user.name.trim().slice(0, 2) : "أد";
@@ -80,9 +79,8 @@ export default function UserDropdown() {
         </span>
 
         <svg
-          className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`stroke-gray-500 dark:stroke-gray-400 transition-transform duration-200 ${isOpen ? "rotate-180" : ""
+            }`}
           width="18"
           height="20"
           viewBox="0 0 18 20"

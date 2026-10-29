@@ -10,7 +10,7 @@ interface AudioLessonCardProps {
 const getMediaUrl = (path: string | null | undefined) => {
   if (!path) return null;
   if (path.startsWith("http")) return path;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
   return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
 };
 
@@ -70,9 +70,18 @@ export default function AudioLessonCard({ lesson, index }: AudioLessonCardProps)
       <div className="space-y-2.5 my-auto text-center px-1 py-1">
         {lesson.categoryName && (
           <div>
-            <span className="inline-block px-2.5 py-0.5 rounded-md text-[11.5px] font-bold bg-[#FAF3EF] text-[#864024] border border-[#F5E3D8]">
-              {lesson.categoryName}
-            </span>
+            {lesson.categoryId ? (
+              <Link
+                href={`/lessons?categoryId=${lesson.categoryId}`}
+                className="inline-block px-2.5 py-0.5 rounded-md text-[11.5px] font-bold bg-[#FAF3EF] text-[#864024] border border-[#F5E3D8] hover:bg-[#F2E2D2] transition-colors"
+              >
+                {lesson.categoryName}
+              </Link>
+            ) : (
+              <span className="inline-block px-2.5 py-0.5 rounded-md text-[11.5px] font-bold bg-[#FAF3EF] text-[#864024] border border-[#F5E3D8]">
+                {lesson.categoryName}
+              </span>
+            )}
           </div>
         )}
 

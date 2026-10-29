@@ -5,7 +5,7 @@ export interface Category {
   parentId?: number | null;
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
 
 // Curated fallbacks in case the backend server is temporarily unavailable during SSR
 const FALLBACK_CATEGORIES: Category[] = [

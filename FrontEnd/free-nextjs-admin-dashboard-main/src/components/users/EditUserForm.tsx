@@ -268,7 +268,7 @@ export default function EditUserForm({ user }: EditUserFormProps) {
           </button>
         </div>
       )}
-            {serverSuccess && (
+      {serverSuccess && (
         <div className="flex items-center justify-between p-4 rounded-xl border bg-green-50 border-green-200 text-green-800 dark:bg-green-950/30 dark:border-green-800 dark:text-green-300 animate-in fade-in duration-200">
           <div className="flex items-center gap-2 text-sm font-medium">
             <CheckCircleIcon className="w-5 h-5 shrink-0 text-green-600" />
@@ -302,8 +302,8 @@ export default function EditUserForm({ user }: EditUserFormProps) {
                   }
                 }}
                 className={`w-full h-12 ps-12 pe-4 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 transition-colors focus:outline-hidden dark:bg-gray-800/60 dark:text-white ${errors.name
-                    ? "border-red-400 bg-red-50/20 focus:border-red-500 focus:ring-2 focus:ring-red-400/20"
-                    : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] focus:ring-2 focus:ring-[#3F4A2B]/15 dark:border-gray-800"
+                  ? "border-red-400 bg-red-50/20 focus:border-red-500 focus:ring-2 focus:ring-red-400/20"
+                  : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] focus:ring-2 focus:ring-[#3F4A2B]/15 dark:border-gray-800"
                   }`}
               />
             </div>
@@ -334,8 +334,8 @@ export default function EditUserForm({ user }: EditUserFormProps) {
                   }
                 }}
                 className={`w-full h-12 ps-12 pe-4 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 transition-colors focus:outline-hidden text-start dark:bg-gray-800/60 dark:text-white ${errors.email
-                    ? "border-red-400 bg-red-50/20 focus:border-red-500 focus:ring-2 focus:ring-red-400/20"
-                    : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] focus:ring-2 focus:ring-[#3F4A2B]/15 dark:border-gray-800"
+                  ? "border-red-400 bg-red-50/20 focus:border-red-500 focus:ring-2 focus:ring-red-400/20"
+                  : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] focus:ring-2 focus:ring-[#3F4A2B]/15 dark:border-gray-800"
                   }`}
               />
             </div>
@@ -371,8 +371,8 @@ export default function EditUserForm({ user }: EditUserFormProps) {
                   }
                 }}
                 className={`w-full h-12 ps-12 pe-12 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 transition-colors focus:outline-hidden text-start dark:bg-gray-800/60 dark:text-white ${errors.password
-                    ? "border-red-400 bg-red-50/20 focus:border-red-500 focus:ring-2 focus:ring-red-400/20"
-                    : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] focus:ring-2 focus:ring-[#3F4A2B]/15 dark:border-gray-800"
+                  ? "border-red-400 bg-red-50/20 focus:border-red-500 focus:ring-2 focus:ring-red-400/20"
+                  : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] focus:ring-2 focus:ring-[#3F4A2B]/15 dark:border-gray-800"
                   }`}
               />
               <button
@@ -409,8 +409,8 @@ export default function EditUserForm({ user }: EditUserFormProps) {
                   }
                 }}
                 className={`w-full h-12 appearance-none px-4 pe-10 rounded-xl border text-sm text-gray-800 focus:outline-hidden transition-colors dark:bg-gray-800/60 dark:text-white cursor-pointer ${errors.roleId
-                    ? "border-red-400 bg-red-50/20 focus:border-red-500 focus:ring-2 focus:ring-red-400/20"
-                    : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] focus:ring-2 focus:ring-[#3F4A2B]/15 dark:border-gray-800"
+                  ? "border-red-400 bg-red-50/20 focus:border-red-500 focus:ring-2 focus:ring-red-400/20"
+                  : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] focus:ring-2 focus:ring-[#3F4A2B]/15 dark:border-gray-800"
                   }`}
               >
                 <option value="1">مدير عام</option>
@@ -436,8 +436,8 @@ export default function EditUserForm({ user }: EditUserFormProps) {
 
             <div
               className={`rounded-2xl border-2 border-dashed p-5 transition-colors ${errors.profileImage
-                  ? "border-red-400 bg-red-50/20"
-                  : "border-gray-200 bg-[#FAFAF5] hover:border-[#3F4A2B]/50 dark:border-gray-800 dark:bg-gray-800/40"
+                ? "border-red-400 bg-red-50/20"
+                : "border-gray-200 bg-[#FAFAF5] hover:border-[#3F4A2B]/50 dark:border-gray-800 dark:bg-gray-800/40"
                 }`}
             >
               {previewUrl ? (
@@ -487,10 +487,9 @@ export default function EditUserForm({ user }: EditUserFormProps) {
                       src={
                         existingImagePath.startsWith("http")
                           ? existingImagePath
-                          : `${
-                              process.env.NEXT_PUBLIC_API_URL ||
-                              "https://localhost:7281"
-                            }${existingImagePath}`
+                          : `${process.env.NEXT_PUBLIC_API_URL ||
+                          "http://abuzarelqalamony.somee.com"
+                          }${existingImagePath}`
                       }
                       alt={user.name}
                       width={96}

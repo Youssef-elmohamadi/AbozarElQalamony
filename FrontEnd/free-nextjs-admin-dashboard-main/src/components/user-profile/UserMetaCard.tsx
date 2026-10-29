@@ -30,9 +30,8 @@ export default function UserMetaCard({
   const avatarUrl = user?.profileImagePath
     ? user.profileImagePath.startsWith("http")
       ? user.profileImagePath
-      : `${process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281"}${
-          user.profileImagePath.startsWith("/") ? "" : "/"
-        }${user.profileImagePath}`
+      : `${process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com"}${user.profileImagePath.startsWith("/") ? "" : "/"
+      }${user.profileImagePath}`
     : null;
 
   const initials = user?.name ? user.name.trim().slice(0, 2) : "أد";

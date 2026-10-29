@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
 
 export const dynamic = "force-dynamic";
 
@@ -29,7 +29,7 @@ export async function GET(request: NextRequest) {
       headers: {
         Accept: "application/json",
       },
-      next: { 
+      next: {
         revalidate: 86400,
         tags: ["quran", "quran-list"],
       },

@@ -18,7 +18,7 @@ const getMediaUrl = (path: string | null | undefined) => {
   if (path.startsWith("/uploads/") || path.startsWith("uploads/")) {
     return path.startsWith("/") ? path : `/${path}`;
   }
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
   return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
 };
 

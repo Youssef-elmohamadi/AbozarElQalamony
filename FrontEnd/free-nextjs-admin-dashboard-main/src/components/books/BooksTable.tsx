@@ -88,7 +88,7 @@ export default function BooksTable({
   const getMediaUrl = (path: string | null | undefined) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
     return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
   };
 
@@ -488,8 +488,8 @@ export default function BooksTable({
       {feedback && (
         <div
           className={`flex items-center justify-between p-4 rounded-xl border animate-in fade-in duration-200 ${feedback.type === "success"
-              ? "bg-green-50 border-green-200 text-green-800 dark:bg-green-950/30 dark:border-green-800 dark:text-green-300"
-              : "bg-red-50 border-red-200 text-red-800 dark:bg-red-950/30 dark:border-red-800 dark:text-red-300"
+            ? "bg-green-50 border-green-200 text-green-800 dark:bg-green-950/30 dark:border-green-800 dark:text-green-300"
+            : "bg-red-50 border-red-200 text-red-800 dark:bg-red-950/30 dark:border-red-800 dark:text-red-300"
             }`}
         >
           <div className="flex items-center gap-3">

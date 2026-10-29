@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import type { Category } from "@/api/public/categories";
 
 interface LessonsCategorySliderProps {
@@ -17,6 +17,15 @@ export default function LessonsCategorySlider({
   totalLessonsCount,
 }: LessonsCategorySliderProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (selectedCategoryId && scrollContainerRef.current) {
+      const activeBtn = scrollContainerRef.current.querySelector<HTMLElement>('[data-selected="true"]');
+      if (activeBtn) {
+        activeBtn.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+      }
+    }
+  }, [selectedCategoryId]);
 
   const scroll = (direction: "left" | "right") => {
     if (scrollContainerRef.current) {
@@ -86,6 +95,7 @@ export default function LessonsCategorySlider({
             <button
               key={cat.id}
               type="button"
+              data-selected={isSelected}
               onClick={() => onSelectCategory(cat.id)}
               className={`shrink-0 inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-[13px] font-bold transition-all duration-150 cursor-pointer ${
                 isSelected

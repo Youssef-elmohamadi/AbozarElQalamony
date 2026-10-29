@@ -208,7 +208,9 @@ export default async function CategoryPage({
                     >
                       <div>
                         <h3 className="text-sm font-extrabold text-brand-900 mb-1">
-                          {sermon.title}
+                          <Link href={`/sermons/${sermon.id}`} className="hover:text-accent-600 transition-colors">
+                            {sermon.title}
+                          </Link>
                         </h3>
                         {sermon.description && (
                           <p className="text-xs text-gray-600 line-clamp-2">
@@ -217,17 +219,16 @@ export default async function CategoryPage({
                         )}
                       </div>
                       <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs">
-                        <span className="text-gray-400">خطبة جمعة</span>
-                        {sermon.audioFilePath && (
-                          <a
-                            href={sermon.audioFilePath}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="font-bold text-[#C0673F] hover:text-[#864024]"
-                          >
-                            استماع للخطبة &larr;
-                          </a>
-                        )}
+                        <span className="text-gray-400">
+                          {sermon.durationInMinutes ? `${sermon.durationInMinutes} دقيقة` : "خطبة جمعة"}
+                        </span>
+                        <Link
+                          href={`/sermons/${sermon.id}`}
+                          className="font-bold text-[#C0673F] hover:text-[#864024] flex items-center gap-1"
+                        >
+                          <span>استماع وتفاصيل</span>
+                          <span>&larr;</span>
+                        </Link>
                       </div>
                     </div>
                   ))}

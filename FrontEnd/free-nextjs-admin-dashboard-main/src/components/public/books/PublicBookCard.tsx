@@ -12,7 +12,7 @@ interface PublicBookCardProps {
 const getMediaUrl = (path: string | null | undefined) => {
   if (!path) return null;
   if (path.startsWith("http://") || path.startsWith("https://")) return path;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
   return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
 };
 
@@ -21,10 +21,10 @@ export default function PublicBookCard({ book }: PublicBookCardProps) {
 
   const formattedDate = book.publishDate || book.createdAt
     ? new Date(book.publishDate || book.createdAt || "").toLocaleDateString("ar-EG", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      })
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
     : null;
 
   const rawCover = getMediaUrl(book.coverImagePath);

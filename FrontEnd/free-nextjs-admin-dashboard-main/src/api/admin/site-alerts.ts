@@ -5,7 +5,7 @@ import {
   UpdateSiteAlertInput,
 } from "@/types/site-alert";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
 
 const isRedirect = (error: any) =>
   typeof error?.digest === "string" && error.digest.startsWith("NEXT_REDIRECT");

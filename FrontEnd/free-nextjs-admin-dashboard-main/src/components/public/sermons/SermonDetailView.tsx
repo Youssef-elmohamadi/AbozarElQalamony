@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import type { PublicSermon } from "@/api/public/content";
+import { useAudio, buildAudioTrack } from "@/context/AudioContext";
 import HumanAudioPlayer from "../lessons/HumanAudioPlayer";
 
 interface SermonDetailViewProps {
@@ -15,7 +16,7 @@ interface SermonDetailViewProps {
 const getMediaUrl = (path: string | null | undefined) => {
   if (!path) return null;
   if (path.startsWith("http")) return path;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
   return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
 };
 
@@ -53,6 +54,8 @@ export default function SermonDetailView({
   const [copied, setCopied] = useState(false);
   const [isDescExpanded, setIsDescExpanded] = useState(false);
 
+  const { playTrack, togglePlay, isTrackActive, isPlaying } = useAudio();
+
   const audioUrl = getMediaUrl(sermon.audioFilePath);
   const formattedDate = formatDate(sermon.deliveryDate || sermon.publishDate || sermon.createdAt);
 
@@ -80,6 +83,21 @@ export default function SermonDetailView({
     }
   };
 
+  const handlePlayRelated = (rel: PublicSermon) => {
+    if (isTrackActive(rel.id)) {
+      togglePlay();
+      return;
+    }
+    const track = buildAudioTrack(rel, `/sermons/${rel.id}`);
+    if (track) {
+      const allSermons = [sermon, ...relatedSermons];
+      const playlist = allSermons
+        .map((s) => buildAudioTrack(s, `/sermons/${s.id}`))
+        .filter((t): t is NonNullable<typeof t> => t !== null);
+      playTrack(track, playlist);
+    }
+  };
+
   const tags = ["خطبة جمعة", "موعظة", "التوبة", "الرقائق", "الدار الآخرة"];
 
   return (
@@ -100,7 +118,12 @@ export default function SermonDetailView({
           {sermon.categoryName && (
             <>
               <span>/</span>
-              <span className="text-[#3F4A2B] font-semibold">{sermon.categoryName}</span>
+              <Link
+                href={sermon.categoryId ? `/sermons?categoryId=${sermon.categoryId}` : "/sermons"}
+                className="hover:text-[#3F4A2B] transition-colors"
+              >
+                {sermon.categoryName}
+              </Link>
             </>
           )}
         </nav>
@@ -109,9 +132,12 @@ export default function SermonDetailView({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* Main Column */}
           <main className="lg:col-span-8 space-y-6">
+            {/* On-Page Full Audio Player (Syncs with persistent global AudioContext) */}
             <section aria-label="مشغل الخطبة الصوتي">
               <HumanAudioPlayer
-                audioUrl={audioUrl}
+                track={sermon}
+                playlist={[sermon, ...relatedSermons]}
+                pageUrl={`/sermons/${sermon.id}`}
                 durationInMinutes={sermon.durationInMinutes || 45}
               />
             </section>
@@ -142,8 +168,10 @@ export default function SermonDetailView({
               <div className="flex flex-wrap items-center gap-2.5 pt-1">
                 {audioUrl && (
                   <a
-                    href={audioUrl}
-                    download
+                    href={`/api/download?url=${encodeURIComponent(audioUrl)}&filename=${encodeURIComponent(
+                      `${sermon.title.trim().replace(/[\\/:*?"<>|]/g, "_") || "خطبة"}.mp3`
+                    )}`}
+                    download={`${sermon.title.trim().replace(/[\\/:*?"<>|]/g, "_") || "خطبة"}.mp3`}
                     className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FAF3EF] hover:bg-[#F5E3D8] text-[#864024] text-xs font-bold border border-[#EBC7B3] transition-colors cursor-pointer shadow-2xs"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -219,7 +247,7 @@ export default function SermonDetailView({
               </div>
             </div>
 
-            {/* Previous / Next Sermon */}
+            {/* Previous / Next Sermon Navigation (Keeps audio playing across page transitions!) */}
             <div className="flex items-center justify-between gap-4 pt-2">
               {prevSermon ? (
                 <Link
@@ -266,7 +294,8 @@ export default function SermonDetailView({
                 </div>
               ) : (
                 relatedSermons.map((rel) => {
-                  const isCurrent = rel.id === sermon.id;
+                  const isRelActive = isTrackActive(rel.id);
+                  const isRelPlaying = isRelActive && isPlaying;
                   const relDuration = formatDuration(rel.durationInMinutes || 45);
                   const relDate = formatDate(rel.deliveryDate || rel.publishDate || rel.createdAt);
 
@@ -274,12 +303,11 @@ export default function SermonDetailView({
                     <Link
                       key={rel.id}
                       href={`/sermons/${rel.id}`}
-                      className="group flex items-center justify-between gap-3 text-right hover:opacity-90 transition-opacity"
+                      className="group flex items-center justify-between gap-3 text-right hover:opacity-90 transition-opacity cursor-pointer"
                     >
                       <div className="space-y-1 flex-1 py-1">
-                        <h4 className={`text-[14px] sm:text-[15px] font-bold leading-snug line-clamp-2 ${
-                          isCurrent ? "text-[#C0673F]" : "text-[#1E2516] group-hover:text-[#3F4A2B]"
-                        }`}>
+                        <h4 className={`text-[14px] sm:text-[15px] font-bold leading-snug line-clamp-2 ${isRelActive ? "text-[#C0673F]" : "text-[#1E2516] group-hover:text-[#3F4A2B]"
+                          }`}>
                           {rel.title}
                         </h4>
                         {rel.categoryName && (
@@ -292,20 +320,29 @@ export default function SermonDetailView({
                         </span>
                       </div>
 
-                      <div className="relative w-[110px] sm:w-[125px] h-[75px] sm:h-[82px] rounded-[18px] bg-[#F6F4ED] flex items-center justify-center shrink-0 border border-[#EBE7DA]/80">
-                        <svg
-                          className="w-5 h-5 text-[#9E7B54]"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1.7}
-                            d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"
-                          />
-                        </svg>
+                      <div className={`relative w-[110px] sm:w-[125px] h-[75px] sm:h-[82px] rounded-[18px] flex items-center justify-center shrink-0 border transition-colors ${isRelActive ? "bg-[#FAF1EC] border-[#E8C4B0]" : "bg-[#F6F4ED] border-[#EBE7DA]/80"
+                        }`}>
+                        {isRelPlaying ? (
+                          <div className="flex gap-[3px] items-end h-5">
+                            <span className="w-[3px] bg-[#C0673F] rounded-full" style={{ animation: "eqBar 0.45s ease-in-out infinite alternate", height: "60%" }} />
+                            <span className="w-[3px] bg-[#C0673F] rounded-full" style={{ animation: "eqBar 0.45s ease-in-out infinite alternate 0.15s", height: "100%" }} />
+                            <span className="w-[3px] bg-[#C0673F] rounded-full" style={{ animation: "eqBar 0.45s ease-in-out infinite alternate 0.3s", height: "40%" }} />
+                          </div>
+                        ) : (
+                          <svg
+                            className="w-5 h-5 text-[#9E7B54]"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={1.7}
+                              d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"
+                            />
+                          </svg>
+                        )}
 
                         <span className="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-[#1E2516] text-[#FAFAF5] text-[10.5px] font-mono font-bold tracking-tight shadow-2xs">
                           {relDuration}

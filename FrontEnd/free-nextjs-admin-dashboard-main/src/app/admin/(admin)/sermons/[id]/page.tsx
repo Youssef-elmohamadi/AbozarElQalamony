@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: SermonDetailsPageProps): Prom
         description: sermon.description || "معاينة تفاصيل الخطبة",
       };
     }
-  } catch {}
+  } catch { }
   return {
     title: "معاينة الخطبة | لوحة التحكم",
   };
@@ -50,7 +50,7 @@ export default async function SermonDetailsPage({ params }: SermonDetailsPagePro
   const getMediaUrl = (path: string | null | undefined) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
     return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
   };
 

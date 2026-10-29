@@ -34,17 +34,17 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const searchData = query
     ? await getGlobalSearch({ q: query, sort, section, limitPerSection: 12 })
     : {
-        query: "",
-        sort: "latest",
-        totalResults: 0,
-        categories: [],
-        lessons: [],
-        sermons: [],
-        books: [],
-        quran: [],
-        articles: [],
-        alerts: [],
-      };
+      query: "",
+      sort: "latest",
+      totalResults: 0,
+      categories: [],
+      lessons: [],
+      sermons: [],
+      books: [],
+      quran: [],
+      articles: [],
+      alerts: [],
+    };
 
   const {
     categories = [],
@@ -104,7 +104,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const getMediaUrl = (path: string | null | undefined) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
     return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
   };
 
@@ -195,21 +195,19 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
               <div className="flex items-center gap-2">
                 <Link
                   href={`/search?q=${encodeURIComponent(query)}&sort=latest${section !== "all" ? `&section=${section}` : ""}`}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                    sort === "latest"
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${sort === "latest"
                       ? "bg-[#273318] text-[#FAFAF5] shadow-xs"
                       : "bg-[#EEF0E6] text-[#3F4A2B] hover:bg-[#E4E7DA]"
-                  }`}
+                    }`}
                 >
                   الأحدث أولاً
                 </Link>
                 <Link
                   href={`/search?q=${encodeURIComponent(query)}&sort=oldest${section !== "all" ? `&section=${section}` : ""}`}
-                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                    sort === "oldest"
+                  className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${sort === "oldest"
                       ? "bg-[#273318] text-[#FAFAF5] shadow-xs"
                       : "bg-[#EEF0E6] text-[#3F4A2B] hover:bg-[#E4E7DA]"
-                  }`}
+                    }`}
                 >
                   الأقدم أولاً
                 </Link>

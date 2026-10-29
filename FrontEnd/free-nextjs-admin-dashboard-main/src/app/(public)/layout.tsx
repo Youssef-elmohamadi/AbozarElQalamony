@@ -2,11 +2,12 @@ import React from "react";
 import type { Metadata } from "next";
 import PublicHeader from "@/components/public/header/PublicHeader";
 import PublicFooter from "@/components/public/footer/PublicFooter";
+import AudioProviderWrapper from "@/components/public/AudioProviderWrapper";
 import { getPublicCategories } from "@/api/public/categories";
 
 const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://sheikh-abozar.com";
-const YOUTUBE_URL = "https://www.youtube.com/@AboZarAlqalamoni";
+const YOUTUBE_URL = "https://www.youtube.com/@abuzaralqalamoni";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -129,9 +130,12 @@ export default async function PublicLayout({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <PublicHeader categories={categories} youtubeUrl={YOUTUBE_URL} />
-      <main className="flex-1 w-full">{children}</main>
-      <PublicFooter youtubeUrl={YOUTUBE_URL} />
+      <AudioProviderWrapper>
+        <PublicHeader categories={categories} youtubeUrl={YOUTUBE_URL} />
+        <main className="flex-1 w-full">{children}</main>
+        <PublicFooter youtubeUrl={YOUTUBE_URL} />
+      </AudioProviderWrapper>
     </div>
   );
 }
+

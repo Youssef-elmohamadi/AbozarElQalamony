@@ -357,7 +357,7 @@ export default function CreateLessonForm() {
     setIsUploading(true);
     setUploadProgress(1);
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
     const token = getToken();
 
     const executeSubmission = async () => {
@@ -499,11 +499,10 @@ export default function CreateLessonForm() {
               onChange={(e) => setTitle(e.target.value)}
               placeholder="مثال: الدرس الأول: مقدمة في العقيدة وأصول الإيمان"
               maxLength={500}
-              className={`w-full px-4 py-2.5 rounded-xl border text-sm transition-all bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${
-                errors.title
+              className={`w-full px-4 py-2.5 rounded-xl border text-sm transition-all bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${errors.title
                   ? "border-red-400 focus:ring-red-200"
                   : "border-gray-200 dark:border-gray-700 focus:border-brand-500 focus:ring-brand-200/50"
-              }`}
+                }`}
             />
             {errors.title && <p className="text-xs text-red-600 mt-1">{errors.title}</p>}
           </div>
@@ -518,11 +517,10 @@ export default function CreateLessonForm() {
                 value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
                 disabled={loadingCategories}
-                className={`w-full appearance-none px-4 py-2.5 pe-10 rounded-xl border text-sm transition-all bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 ${
-                  errors.categoryId
+                className={`w-full appearance-none px-4 py-2.5 pe-10 rounded-xl border text-sm transition-all bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 ${errors.categoryId
                     ? "border-red-400 focus:ring-red-200"
                     : "border-gray-200 dark:border-gray-700 focus:border-brand-500 focus:ring-brand-200/50"
-                }`}
+                  }`}
               >
                 {loadingCategories ? (
                   <option value="">جاري تحميل التصنيفات...</option>
@@ -638,7 +636,7 @@ export default function CreateLessonForm() {
                 onClick={() => {
                   try {
                     dateInputRef.current?.showPicker?.();
-                  } catch {}
+                  } catch { }
                 }}
                 className="w-full px-4 py-2.5 pe-11 rounded-xl border border-gray-200 dark:border-gray-700 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:border-brand-500 focus:ring-brand-200/50 cursor-pointer transition-all"
               />
@@ -647,7 +645,7 @@ export default function CreateLessonForm() {
                 onClick={() => {
                   try {
                     dateInputRef.current?.showPicker?.();
-                  } catch {}
+                  } catch { }
                 }}
                 className="absolute end-3.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 transition-colors cursor-pointer"
                 title="فتح التقويم"

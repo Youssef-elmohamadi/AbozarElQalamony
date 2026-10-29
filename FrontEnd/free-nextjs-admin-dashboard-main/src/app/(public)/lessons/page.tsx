@@ -23,7 +23,7 @@ export async function generateMetadata({
 
   if (catId) {
     // 1. في حال اختيار تصنيف محدد
-    const matchedCategory = lessonCategories.find((c) => c.id === catId);
+    const matchedCategory = lessonCategories.find((c) => c.id === catId) || categories.find((c) => c.id === catId);
     if (matchedCategory) {
       pageTitle = `دروس ${matchedCategory.name}`;
       pageDesc = `استمع وتصفح دروس ${matchedCategory.name} لفضيلة الشيخ أبي ذر القلموني حفظه الله. استماع مباشر وتحميل بجودة عالية.`;
@@ -66,13 +66,20 @@ export default async function LessonsPage({ searchParams }: LessonsPageProps) {
     getPublicLessons({ page: 1, pageSize: 12, sort, categoryId: initialCategoryId }),
   ]);
 
-  // Filter categories by type 2 (الدروس العلمية)
-  const lessonCategories = allCategories.filter((c) => c.type === 2);
+  // Filter categories by type 2 (الدروس العلمية)، مع التأكد من إدراج التصنيف المختار لو كان تصنيفاً فرعياً
+  let lessonCategories = allCategories.filter((c) => c.type === 2);
+  if (initialCategoryId && !lessonCategories.some((c) => c.id === initialCategoryId)) {
+    const matched = allCategories.find((c) => c.id === initialCategoryId);
+    if (matched) {
+      lessonCategories = [matched, ...lessonCategories];
+    }
+  }
 
   return (
     <div className="py-8 sm:py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <LessonsLibrary
+          key={initialCategoryId ?? "all"}
           initialLessons={initialLessonsData.items}
           initialTotalCount={initialLessonsData.totalCount}
           initialTotalPages={initialLessonsData.totalPages}

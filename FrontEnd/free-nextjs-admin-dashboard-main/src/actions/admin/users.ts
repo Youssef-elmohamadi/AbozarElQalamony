@@ -29,7 +29,7 @@ export async function getUsersAction(
 export async function createUserAction(data: FormData) {
     try {
         await apiFetch(
-            process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281",
+            process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com",
             `/api/admin/users/register`,
             { method: "POST", body: data },
             "admin_token"
@@ -67,7 +67,7 @@ export async function createUserAction(data: FormData) {
 export async function deleteUserAction(id: number) {
     try {
         await apiFetch(
-            process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281",
+            process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com",
             `/api/users/${id}`,
             { method: "DELETE" },
             "admin_token"
@@ -106,7 +106,7 @@ export async function deleteUserAction(id: number) {
 export async function updateUserAction(id: number | string, data: FormData) {
     try {
         await apiFetch(
-            process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281",
+            process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com",
             `/api/admin/users/${id}`,
             { method: "PUT", body: data },
             "admin_token"
@@ -214,4 +214,4 @@ export async function updateProfileAction(data: FormData) {
         };
     }
 }
-
+

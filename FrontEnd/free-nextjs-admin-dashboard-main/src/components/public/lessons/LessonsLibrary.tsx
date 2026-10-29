@@ -152,11 +152,28 @@ export default function LessonsLibrary({
     }
   };
 
+  // Sync selectedCategoryId and sort with URL (handles direct links, client navigation, and browser back/forward buttons)
   useEffect(() => {
-    if (initialCategoryId !== undefined && initialCategoryId !== selectedCategoryId) {
-      setSelectedCategoryId(initialCategoryId);
-    }
-  }, [initialCategoryId]);
+    const syncFromUrl = () => {
+      if (typeof window === "undefined") return;
+      const params = new URLSearchParams(window.location.search);
+      const catParam = params.get("categoryId");
+      const urlCatId = catParam !== null && catParam !== "" ? Number(catParam) : null;
+      if (urlCatId !== null && !isNaN(urlCatId)) {
+        setSelectedCategoryId(urlCatId);
+      } else if (catParam === null) {
+        setSelectedCategoryId(null);
+      }
+      const sortParam = params.get("sort");
+      if (sortParam === "latest" || sortParam === "oldest") {
+        setSortOrder(sortParam);
+      }
+    };
+
+    syncFromUrl();
+    window.addEventListener("popstate", syncFromUrl);
+    return () => window.removeEventListener("popstate", syncFromUrl);
+  }, []);
 
   // Track previous category and search values to trigger fetch ONLY on actual user change
   const prevCategoryRef = useRef<number | null>(initialCategoryId);
@@ -351,7 +368,7 @@ export default function LessonsLibrary({
               } else {
                 url.searchParams.delete("categoryId");
               }
-              window.history.replaceState(null, "", url.toString());
+              window.history.pushState(null, "", url.toString());
             }
           }}
           totalLessonsCount={totalCount}

@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: QuranDetailsPageProps): Promi
         description: item.description || "معاينة تفاصيل التلاوة القرآنية",
       };
     }
-  } catch {}
+  } catch { }
   return {
     title: "معاينة التلاوة القرآنية | لوحة التحكم",
   };
@@ -51,7 +51,7 @@ export default async function QuranDetailsPage({ params }: QuranDetailsPageProps
   const getMediaUrl = (path: string | null | undefined) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
     return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
   };
 

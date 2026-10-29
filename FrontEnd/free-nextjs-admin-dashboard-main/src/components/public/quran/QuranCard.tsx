@@ -1,6 +1,8 @@
+"use client";
+
 import React from "react";
-import Link from "next/link";
 import type { PublicQuran } from "@/api/public/content";
+import { useAudio, buildAudioTrack } from "@/context/AudioContext";
 
 interface QuranCardProps {
   item: PublicQuran;
@@ -10,7 +12,7 @@ interface QuranCardProps {
 const getMediaUrl = (path: string | null | undefined) => {
   if (!path) return null;
   if (path.startsWith("http")) return path;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
   return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
 };
 
@@ -40,12 +42,37 @@ const formatDuration = (minutes?: number | null) => {
 };
 
 export default function QuranCard({ item }: QuranCardProps) {
+  const { playTrack, togglePlay, isTrackActive, isPlaying } = useAudio();
+  const trackId = `quran-${item.id}`;
+  const isActive = isTrackActive(trackId);
+  const isCurrentPlaying = isActive && isPlaying;
+
   const audioUrl = getMediaUrl(item.audioFilePath);
   const formattedDate = formatDate(item.publishDate || item.createdAt);
   const durationText = formatDuration(item.durationInMinutes);
 
+  const handlePlayQuran = () => {
+    if (isActive) {
+      togglePlay();
+      return;
+    }
+    const track = buildAudioTrack({
+      id: trackId,
+      title: item.title,
+      audioFilePath: item.audioFilePath,
+      categoryName: item.surahName ? `سورة ${item.surahName}` : (item.categoryName || "تلاوة قرآنية"),
+      durationInMinutes: item.durationInMinutes,
+    });
+    if (track) {
+      playTrack(track);
+    }
+  };
+
   return (
-    <article className="group relative bg-[#FAFAF5] rounded-[16px] border border-[#E7E2D5] hover:border-[#C0673F]/60 p-5 shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between text-right overflow-hidden">
+    <article className={`group relative rounded-[16px] border p-5 shadow-2xs hover:shadow-md transition-all duration-200 flex flex-col justify-between text-right overflow-hidden ${isActive
+        ? "bg-[#FAF7F1] border-[#C0673F]"
+        : "bg-[#FAFAF5] border-[#E7E2D5] hover:border-[#C0673F]/60"
+      }`}>
       {/* Top Bar: Duration & Surah Number Badge */}
       <div className="flex items-center justify-between gap-2 mb-3">
         {/* Duration badge */}
@@ -93,20 +120,28 @@ export default function QuranCard({ item }: QuranCardProps) {
           {formattedDate || "تلاوة مباركة"}
         </span>
 
-        {/* Audio Action */}
+        {/* Audio Action (Global Audio Integration) */}
         {audioUrl ? (
-          <a
-            href={audioUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#FAF3EF] hover:bg-[#F5E3D8] text-[#864024] text-[12px] font-bold transition-colors cursor-pointer border border-[#EBC7B3]"
-            aria-label={`استماع لـ ${item.title}`}
+          <button
+            type="button"
+            onClick={handlePlayQuran}
+            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-bold transition-all cursor-pointer border ${isActive
+                ? "bg-[#C0673F] text-white border-[#C0673F] shadow-sm"
+                : "bg-[#FAF3EF] hover:bg-[#F5E3D8] text-[#864024] border-[#EBC7B3]"
+              }`}
+            aria-label={isCurrentPlaying ? `إيقاف مؤقت لـ ${item.title}` : `استماع لـ ${item.title}`}
           >
-            <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z" />
-            </svg>
-            <span>استماع للتلاوة</span>
-          </a>
+            {isCurrentPlaying ? (
+              <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+              </svg>
+            ) : (
+              <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            )}
+            <span>{isCurrentPlaying ? "إيقاف مؤقت" : isActive ? "متابعة" : "استماع للتلاوة"}</span>
+          </button>
         ) : (
           <span className="text-[11px] text-[#8E987B] font-medium">
             تسجيل صوتي

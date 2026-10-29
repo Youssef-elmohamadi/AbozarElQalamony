@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 const getMediaUrl = (path: string | null | undefined) => {
   if (!path) return null;
   if (path.startsWith("http")) return path;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
   return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
 };
 
@@ -167,6 +167,21 @@ const renderCategoryIcon = (type: number) => {
           />
         </svg>
       );
+  }
+};
+
+const getCategoryTargetUrl = (type: number, id: number) => {
+  switch (type) {
+    case 1:
+      return `/books?categoryId=${id}`;
+    case 2:
+      return `/lessons?categoryId=${id}`;
+    case 3:
+      return `/sermons?categoryId=${id}`;
+    case 4:
+      return `/quran?categoryId=${id}`;
+    default:
+      return `/lessons?categoryId=${id}`;
   }
 };
 
@@ -331,7 +346,7 @@ export default async function HomePage() {
                           {children.slice(0, 3).map((child) => (
                             <Link
                               key={child.id}
-                              href={`/categories/${child.id}`}
+                              href={getCategoryTargetUrl(child.type || cat.type || 2, child.id)}
                               className="inline-block text-[13px] font-normal text-[#3F4834] bg-[#F3EFE6] hover:bg-[#EAE4D7] hover:text-[#222A17] px-2.5 py-0.5 rounded-[8px] leading-[1.5] transition-colors"
                             >
                               {child.name}
@@ -410,10 +425,20 @@ export default async function HomePage() {
                   <div className="space-y-2 pb-2">
                     {lesson.categoryName && (
                       <div>
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[8px] text-[12.5px] font-medium bg-[#FAF4EC] text-[#B05B33] border border-[#F2E2D2]">
-                          {renderCategoryIcon(2)}
-                          {lesson.categoryName}
-                        </span>
+                        {lesson.categoryId ? (
+                          <Link
+                            href={`/lessons?categoryId=${lesson.categoryId}`}
+                            className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[8px] text-[12.5px] font-medium bg-[#FAF4EC] text-[#B05B33] border border-[#F2E2D2] hover:bg-[#F2E2D2] transition-colors relative z-10"
+                          >
+                            {renderCategoryIcon(2)}
+                            {lesson.categoryName}
+                          </Link>
+                        ) : (
+                          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-[8px] text-[12.5px] font-medium bg-[#FAF4EC] text-[#B05B33] border border-[#F2E2D2]">
+                            {renderCategoryIcon(2)}
+                            {lesson.categoryName}
+                          </span>
+                        )}
                       </div>
                     )}
 
@@ -513,7 +538,7 @@ export default async function HomePage() {
 
                       <h3 className="text-[18px] font-semibold text-[#1E2616] leading-[1.35] line-clamp-2 pt-0.5">
                         <Link
-                          href={`/content?type=sermons&id=${sermon.id}`}
+                          href={`/sermons/${sermon.id}`}
                           className="focus:outline-hidden after:absolute after:inset-0 after:rounded-[14px]"
                         >
                           {sermon.title}
@@ -546,10 +571,8 @@ export default async function HomePage() {
                       </span>
 
                       {sermon.audioFilePath ? (
-                        <a
-                          href={getMediaUrl(sermon.audioFilePath)!}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                        <Link
+                          href={`/sermons/${sermon.id}`}
                           className="relative z-10 font-semibold text-[14px] text-[#C0673F] hover:text-[#9E4F28] flex items-center gap-1 leading-[1.5] transition-colors"
                         >
                           <span>استماع للخطبة</span>
@@ -559,7 +582,7 @@ export default async function HomePage() {
                           >
                             <path d="M8 5v14l11-7z" />
                           </svg>
-                        </a>
+                        </Link>
                       ) : (
                         <span className="font-semibold text-[14px] text-[#C0673F] flex items-center gap-1 leading-[1.5]">
                           <span>تفاصيل الخطبة</span>

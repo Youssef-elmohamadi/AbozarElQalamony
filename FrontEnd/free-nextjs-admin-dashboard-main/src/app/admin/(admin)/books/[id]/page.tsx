@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: BookDetailsPageProps): Promis
         description: book.description || "معاينة تفاصيل الكتاب",
       };
     }
-  } catch {}
+  } catch { }
   return {
     title: "معاينة الكتاب | لوحة التحكم",
   };
@@ -52,7 +52,7 @@ export default async function BookDetailsPage({ params }: BookDetailsPageProps) 
   const getMediaUrl = (path: string | null | undefined) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
     return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
   };
 

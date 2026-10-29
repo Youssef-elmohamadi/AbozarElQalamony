@@ -399,7 +399,9 @@ export default async function ContentPage({ searchParams }: ContentPageProps) {
                             )}
                           </div>
                           <h3 className="text-sm sm:text-base font-extrabold text-brand-900 group-hover:text-accent-600 transition-colors line-clamp-2 leading-snug">
-                            {sermon.title}
+                            <Link href={`/sermons/${sermon.id}`} className="hover:text-accent-700 transition-colors">
+                              {sermon.title}
+                            </Link>
                           </h3>
                           {sermon.description && (
                             <p className="text-xs text-gray-600 line-clamp-2 leading-relaxed">
@@ -409,23 +411,21 @@ export default async function ContentPage({ searchParams }: ContentPageProps) {
                         </div>
 
                         <div className="mt-4 pt-3 border-t border-brand-100 flex items-center justify-between text-xs text-brand-800">
-                          <span className="text-gray-400">خطبة منبرية</span>
-                          {sermon.audioFilePath && (
-                            <a
-                              href={sermon.audioFilePath}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="font-bold text-[#C0673F] hover:text-[#864024] flex items-center gap-1 cursor-pointer"
+                          <span className="text-gray-400">
+                            {sermon.durationInMinutes ? `${sermon.durationInMinutes} دقيقة` : "خطبة منبرية"}
+                          </span>
+                          <Link
+                            href={`/sermons/${sermon.id}`}
+                            className="font-bold text-[#C0673F] hover:text-[#864024] flex items-center gap-1 cursor-pointer"
+                          >
+                            <span>استماع وتفاصيل</span>
+                            <svg
+                              className="w-3.5 h-3.5 fill-current"
+                              viewBox="0 0 24 24"
                             >
-                              <span>استماع للخطبة</span>
-                              <svg
-                                className="w-3.5 h-3.5 fill-current"
-                                viewBox="0 0 24 24"
-                              >
-                                <path d="M8 5v14l11-7z" />
-                              </svg>
-                            </a>
-                          )}
+                              <path d="M8 5v14l11-7z" />
+                            </svg>
+                          </Link>
                         </div>
                       </article>
                     );

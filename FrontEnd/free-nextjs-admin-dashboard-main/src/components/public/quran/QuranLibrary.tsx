@@ -140,11 +140,28 @@ export default function QuranLibrary({
     fetchQuranData(1, selectedCategoryId, debouncedSearch, false, newSort);
   };
 
+  // Sync selectedCategoryId and sort with URL (handles direct links, client navigation, and browser back/forward buttons)
   useEffect(() => {
-    if (initialCategoryId !== undefined && initialCategoryId !== selectedCategoryId) {
-      setSelectedCategoryId(initialCategoryId);
-    }
-  }, [initialCategoryId]);
+    const syncFromUrl = () => {
+      if (typeof window === "undefined") return;
+      const params = new URLSearchParams(window.location.search);
+      const catParam = params.get("categoryId");
+      const urlCatId = catParam !== null && catParam !== "" ? Number(catParam) : null;
+      if (urlCatId !== null && !isNaN(urlCatId)) {
+        setSelectedCategoryId(urlCatId);
+      } else if (catParam === null) {
+        setSelectedCategoryId(null);
+      }
+      const sortParam = params.get("sort");
+      if (sortParam === "latest" || sortParam === "oldest") {
+        setSortOrder(sortParam);
+      }
+    };
+
+    syncFromUrl();
+    window.addEventListener("popstate", syncFromUrl);
+    return () => window.removeEventListener("popstate", syncFromUrl);
+  }, []);
 
   // Re-fetch on category or search change
   const isInitialMount = useRef(true);
@@ -330,7 +347,7 @@ export default function QuranLibrary({
                 } else {
                   url.searchParams.delete("categoryId");
                 }
-                window.history.replaceState(null, "", url.toString());
+                window.history.pushState(null, "", url.toString());
               }
             }}
             totalCount={totalCount}

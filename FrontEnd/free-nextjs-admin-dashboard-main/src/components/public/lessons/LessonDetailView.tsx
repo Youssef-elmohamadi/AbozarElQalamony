@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import type { PublicLesson } from "@/api/public/content";
+import { useAudio, buildAudioTrack } from "@/context/AudioContext";
 import HumanAudioPlayer from "./HumanAudioPlayer";
 
 interface LessonDetailViewProps {
@@ -15,7 +16,7 @@ interface LessonDetailViewProps {
 const getMediaUrl = (path: string | null | undefined) => {
   if (!path) return null;
   if (path.startsWith("http")) return path;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
   return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
 };
 
@@ -53,6 +54,8 @@ export default function LessonDetailView({
   const [copied, setCopied] = useState(false);
   const [isDescExpanded, setIsDescExpanded] = useState(false);
 
+  const { playTrack, togglePlay, isTrackActive, isPlaying } = useAudio();
+
   const audioUrl = getMediaUrl(lesson.audioFilePath);
   const formattedDate = formatDate(lesson.publishDate || lesson.createdAt);
 
@@ -80,6 +83,21 @@ export default function LessonDetailView({
     }
   };
 
+  const handlePlayRelated = (rel: PublicLesson) => {
+    if (isTrackActive(rel.id)) {
+      togglePlay();
+      return;
+    }
+    const track = buildAudioTrack(rel, `/lessons/${rel.id}`);
+    if (track) {
+      const allLessons = [lesson, ...relatedLessons];
+      const playlist = allLessons
+        .map((l) => buildAudioTrack(l, `/lessons/${l.id}`))
+        .filter((t): t is NonNullable<typeof t> => t !== null);
+      playTrack(track, playlist);
+    }
+  };
+
   // Derive lecture tags / topics
   const tags = ["التزكية", "الرقائق", "التوبة", "الفرار إلى الله"];
 
@@ -101,7 +119,12 @@ export default function LessonDetailView({
           {lesson.categoryName && (
             <>
               <span>/</span>
-              <span className="text-[#3F4A2B] font-semibold">{lesson.categoryName}</span>
+              <Link
+                href={lesson.categoryId ? `/lessons?categoryId=${lesson.categoryId}` : "/lessons"}
+                className="hover:text-[#3F4A2B] transition-colors"
+              >
+                {lesson.categoryName}
+              </Link>
             </>
           )}
         </nav>
@@ -110,11 +133,13 @@ export default function LessonDetailView({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* RIGHT / MAIN CONTENT: Audio Player & Lesson Details (8 Cols) */}
           <main className="lg:col-span-8 space-y-6">
-            {/* 1. Human Calm Audio Player */}
+            {/* 1. On-Page Full Audio Player (Syncs with persistent global AudioContext) */}
             <section aria-label="مشغل الدرس الصوتي">
               <HumanAudioPlayer
-                audioUrl={audioUrl}
-                durationInMinutes={lesson.durationInMinutes}
+                track={lesson}
+                playlist={[lesson, ...relatedLessons]}
+                pageUrl={`/lessons/${lesson.id}`}
+                durationInMinutes={lesson.durationInMinutes || 45}
               />
             </section>
 
@@ -123,9 +148,12 @@ export default function LessonDetailView({
               {/* Category & Council Badge */}
               <div className="flex items-center gap-2">
                 {lesson.categoryName && (
-                  <span className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-[#FAF3EF] text-[#C0673F] border border-[#F5E3D8]">
+                  <Link
+                    href={lesson.categoryId ? `/lessons?categoryId=${lesson.categoryId}` : "/lessons"}
+                    className="inline-block px-3 py-1 rounded-full text-xs font-bold bg-[#FAF3EF] text-[#C0673F] border border-[#F5E3D8] hover:bg-[#F2E2D2] transition-colors"
+                  >
                     {lesson.categoryName}
-                  </span>
+                  </Link>
                 )}
                 <span className="text-xs text-[#8E987B] font-medium">
                   المجلس {lesson.id}
@@ -148,8 +176,10 @@ export default function LessonDetailView({
               <div className="flex flex-wrap items-center gap-2.5 pt-1">
                 {audioUrl && (
                   <a
-                    href={audioUrl}
-                    download
+                    href={`/api/download?url=${encodeURIComponent(audioUrl)}&filename=${encodeURIComponent(
+                      `${lesson.title.trim().replace(/[\\/:*?"<>|]/g, "_") || "درس"}.mp3`
+                    )}`}
+                    download={`${lesson.title.trim().replace(/[\\/:*?"<>|]/g, "_") || "درس"}.mp3`}
                     className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#FAF3EF] hover:bg-[#F5E3D8] text-[#864024] text-xs font-bold border border-[#EBC7B3] transition-colors cursor-pointer shadow-2xs"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -273,7 +303,8 @@ export default function LessonDetailView({
                 </div>
               ) : (
                 relatedLessons.map((rel) => {
-                  const isCurrent = rel.id === lesson.id;
+                  const isRelActive = isTrackActive(rel.id);
+                  const isRelPlaying = isRelActive && isPlaying;
                   const relDuration = formatDuration(rel.durationInMinutes);
                   const relDate = formatDate(rel.publishDate || rel.createdAt);
 
@@ -281,13 +312,12 @@ export default function LessonDetailView({
                     <Link
                       key={rel.id}
                       href={`/lessons/${rel.id}`}
-                      className="group flex items-center justify-between gap-3 text-right hover:opacity-90 transition-opacity"
+                      className="group flex items-center justify-between gap-3 text-right hover:opacity-90 transition-opacity cursor-pointer"
                     >
                       {/* Right (Text content) */}
                       <div className="space-y-1 flex-1 py-1">
-                        <h4 className={`text-[14px] sm:text-[15px] font-bold leading-snug line-clamp-2 ${
-                          isCurrent ? "text-[#C0673F]" : "text-[#1E2516] group-hover:text-[#3F4A2B]"
-                        }`}>
+                        <h4 className={`text-[14px] sm:text-[15px] font-bold leading-snug line-clamp-2 ${isRelActive ? "text-[#C0673F]" : "text-[#1E2516] group-hover:text-[#3F4A2B]"
+                          }`}>
                           {rel.title}
                         </h4>
                         {rel.categoryName && (
@@ -301,21 +331,30 @@ export default function LessonDetailView({
                       </div>
 
                       {/* Left: Warm cream rounded card with centered gold/terracotta mic & bottom-right black duration badge */}
-                      <div className="relative w-[110px] sm:w-[125px] h-[75px] sm:h-[82px] rounded-[18px] bg-[#F6F4ED] flex items-center justify-center shrink-0 border border-[#EBE7DA]/80">
-                        {/* Mic Icon centered in card */}
-                        <svg
-                          className="w-5 h-5 text-[#9E7B54]"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={1.7}
-                            d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"
-                          />
-                        </svg>
+                      <div className={`relative w-[110px] sm:w-[125px] h-[75px] sm:h-[82px] rounded-[18px] flex items-center justify-center shrink-0 border transition-colors ${isRelActive ? "bg-[#FAF1EC] border-[#E8C4B0]" : "bg-[#F6F4ED] border-[#EBE7DA]/80"
+                        }`}>
+                        {/* Mic Icon or playing indicator */}
+                        {isRelPlaying ? (
+                          <div className="flex gap-[3px] items-end h-5">
+                            <span className="w-[3px] bg-[#C0673F] rounded-full" style={{ animation: "eqBar 0.45s ease-in-out infinite alternate", height: "60%" }} />
+                            <span className="w-[3px] bg-[#C0673F] rounded-full" style={{ animation: "eqBar 0.45s ease-in-out infinite alternate 0.15s", height: "100%" }} />
+                            <span className="w-[3px] bg-[#C0673F] rounded-full" style={{ animation: "eqBar 0.45s ease-in-out infinite alternate 0.3s", height: "40%" }} />
+                          </div>
+                        ) : (
+                          <svg
+                            className="w-5 h-5 text-[#9E7B54]"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={1.7}
+                              d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 100-6 3 3 0 000 6z"
+                            />
+                          </svg>
+                        )}
 
                         {/* Duration pill attached at bottom-right inside card */}
                         <span className="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-[#1E2516] text-[#FAFAF5] text-[10.5px] font-mono font-bold tracking-tight shadow-2xs">

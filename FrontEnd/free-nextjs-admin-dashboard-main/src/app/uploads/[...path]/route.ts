@@ -138,7 +138,7 @@ export async function GET(
   }
 
   // 3. Fallback: Proxy from backend API with SSL validation bypass for local development
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://localhost:7281";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
   const remoteUrl = `${baseUrl}/uploads/${safeSegments.join("/")}`;
 
   try {
