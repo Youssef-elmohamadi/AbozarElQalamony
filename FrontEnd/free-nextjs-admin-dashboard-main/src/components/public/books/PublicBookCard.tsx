@@ -4,17 +4,12 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { PublicBook } from "@/api/public/content";
+import { getMediaUrl } from "@/lib/media";
 
 interface PublicBookCardProps {
   book: PublicBook;
 }
 
-const getMediaUrl = (path: string | null | undefined) => {
-  if (!path) return null;
-  if (path.startsWith("http://") || path.startsWith("https://")) return path;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
-  return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
-};
 
 export default function PublicBookCard({ book }: PublicBookCardProps) {
   const [imageError, setImageError] = useState(false);

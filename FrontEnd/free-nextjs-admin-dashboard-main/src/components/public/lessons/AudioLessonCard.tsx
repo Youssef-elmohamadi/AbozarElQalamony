@@ -1,18 +1,13 @@
 ﻿import React from "react";
 import Link from "next/link";
 import type { PublicLesson } from "@/api/public/content";
+import { getMediaUrl } from "@/lib/media";
 
 interface AudioLessonCardProps {
   lesson: PublicLesson;
   index?: number;
 }
 
-const getMediaUrl = (path: string | null | undefined) => {
-  if (!path) return null;
-  if (path.startsWith("http")) return path;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
-  return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
-};
 
 const formatDate = (dateString?: string | null) => {
   if (!dateString) return "";

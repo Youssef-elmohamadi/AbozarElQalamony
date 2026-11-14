@@ -52,13 +52,7 @@ const STORAGE_KEY = "abozar_audio_state";
 
 const AudioContext = createContext<AudioContextValue | undefined>(undefined);
 
-/* ─── Helper: Resolve media URL ─── */
-const getMediaUrl = (path: string | null | undefined) => {
-  if (!path) return null;
-  if (path.startsWith("http")) return path;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
-  return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
-};
+import { getMediaUrl } from "@/lib/media";
 
 /* ─── Provider ─── */
 export function AudioProvider({ children }: { children: React.ReactNode }) {

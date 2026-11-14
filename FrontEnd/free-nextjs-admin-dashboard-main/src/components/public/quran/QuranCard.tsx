@@ -2,6 +2,7 @@
 
 import React from "react";
 import type { PublicQuran } from "@/api/public/content";
+import { getMediaUrl } from "@/lib/media";
 import { useAudio, buildAudioTrack } from "@/context/AudioContext";
 
 interface QuranCardProps {
@@ -9,12 +10,6 @@ interface QuranCardProps {
   index?: number;
 }
 
-const getMediaUrl = (path: string | null | undefined) => {
-  if (!path) return null;
-  if (path.startsWith("http")) return path;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
-  return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
-};
 
 const formatDate = (dateString?: string | null) => {
   if (!dateString) return "";

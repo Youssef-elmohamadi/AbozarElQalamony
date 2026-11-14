@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { useAudio, buildAudioTrack } from "@/context/AudioContext";
+import { getMediaUrl } from "@/lib/media";
 
 interface TrackItem {
   id: number | string;
@@ -70,13 +71,7 @@ export default function HumanAudioPlayer({
 
   // Resolved audio URL
   const activeAudioUrl =
-    directAudioUrl ||
-    (track?.audioFilePath
-      ? track.audioFilePath.startsWith("http")
-        ? track.audioFilePath
-        : `${process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net"}${track.audioFilePath.startsWith("/") ? "" : "/"
-        }${track.audioFilePath}`
-      : null);
+    directAudioUrl || (track?.audioFilePath ? getMediaUrl(track.audioFilePath) : null);
 
   /* ── Start or toggle playback ── */
   const handleTogglePlay = () => {

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import type { PublicBook } from "@/api/public/content";
+import { getMediaUrl } from "@/lib/media";
 import InteractivePdfReader from "./InteractivePdfReader";
 import { formatArabicDate } from "@/lib/arabicPlural";
 
@@ -12,15 +13,6 @@ interface BookDetailViewProps {
   relatedBooks: PublicBook[];
 }
 
-const getMediaUrl = (path: string | null | undefined) => {
-  if (!path) return null;
-  if (path.startsWith("http://") || path.startsWith("https://")) return path;
-  if (path.startsWith("/uploads/") || path.startsWith("uploads/")) {
-    return path.startsWith("/") ? path : `/${path}`;
-  }
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
-  return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
-};
 
 export default function BookDetailView({
   book,
