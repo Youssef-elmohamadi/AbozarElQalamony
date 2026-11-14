@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useTransition, useMemo, useRef, useEffect } from "react";
 import Image from "next/image";
@@ -254,7 +254,7 @@ export default function UsersTable({
                 src={
                   user.profileImagePath.startsWith("http")
                     ? user.profileImagePath
-                    : `${process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net"
+                    : `${process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net"
                     }${user.profileImagePath}`
                 }
                 alt={user.name}

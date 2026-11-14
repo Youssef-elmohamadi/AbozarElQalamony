@@ -49,9 +49,14 @@ export async function apiFetch(
     ...(options.headers || {}),
   };
 
+  let targetUrl = `${baseUrl}${endpoint}`;
+  if (typeof window !== "undefined" && window.location.protocol === "https:" && baseUrl.startsWith("http://")) {
+    targetUrl = `/backend-api${endpoint.startsWith("/") ? "" : "/"}${endpoint}`;
+  }
+
   let res: Response;
   try {
-    res = await fetch(`${baseUrl}${endpoint}`, {
+    res = await fetch(targetUrl, {
       ...options,
       headers,
     });

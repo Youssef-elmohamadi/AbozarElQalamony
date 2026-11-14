@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useTransition, useRef } from "react";
 import Image from "next/image";
@@ -488,7 +488,7 @@ export default function EditUserForm({ user }: EditUserFormProps) {
                         existingImagePath.startsWith("http")
                           ? existingImagePath
                           : `${process.env.NEXT_PUBLIC_API_URL ||
-                          "https://abo-zar.runasp.net"
+                          "http://abo-zar.runasp.net"
                           }${existingImagePath}`
                       }
                       alt={user.name}

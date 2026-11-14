@@ -1,11 +1,11 @@
-export interface Category {
+﻿export interface Category {
   id: number;
   name: string;
   type: number;
   parentId?: number | null;
 }
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
 
 // Curated fallbacks in case the backend server is temporarily unavailable during SSR
 const FALLBACK_CATEGORIES: Category[] = [

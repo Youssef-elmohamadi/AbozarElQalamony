@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -12,7 +12,7 @@ interface PublicBookCardProps {
 const getMediaUrl = (path: string | null | undefined) => {
   if (!path) return null;
   if (path.startsWith("http://") || path.startsWith("https://")) return path;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
   return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
 };
 

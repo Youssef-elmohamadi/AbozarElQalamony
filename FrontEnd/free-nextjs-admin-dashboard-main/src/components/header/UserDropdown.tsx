@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
@@ -42,7 +42,7 @@ export default function UserDropdown() {
   const avatarUrl = user?.profileImagePath
     ? user.profileImagePath.startsWith("http")
       ? user.profileImagePath
-      : `${process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net"}${user.profileImagePath.startsWith("/") ? "" : "/"
+      : `${process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net"}${user.profileImagePath.startsWith("/") ? "" : "/"
       }${user.profileImagePath}`
     : null;
 

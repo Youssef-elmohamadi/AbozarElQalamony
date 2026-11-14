@@ -1,11 +1,11 @@
-import { apiFetch, ApiError } from "../Config";
+﻿import { apiFetch, ApiError } from "../Config";
 import {
   SiteAlertItem,
   CreateSiteAlertInput,
   UpdateSiteAlertInput,
 } from "@/types/site-alert";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
 
 const isRedirect = (error: any) =>
   typeof error?.digest === "string" && error.digest.startsWith("NEXT_REDIRECT");

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useRef, useEffect } from "react";
 import { useAudio, buildAudioTrack } from "@/context/AudioContext";
@@ -74,7 +74,7 @@ export default function HumanAudioPlayer({
     (track?.audioFilePath
       ? track.audioFilePath.startsWith("http")
         ? track.audioFilePath
-        : `${process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net"}${track.audioFilePath.startsWith("/") ? "" : "/"
+        : `${process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net"}${track.audioFilePath.startsWith("/") ? "" : "/"
         }${track.audioFilePath}`
       : null);
 

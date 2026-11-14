@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -18,7 +18,7 @@ const getMediaUrl = (path: string | null | undefined) => {
   if (path.startsWith("/uploads/") || path.startsWith("uploads/")) {
     return path.startsWith("/") ? path : `/${path}`;
   }
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
   return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
 };
 

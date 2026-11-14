@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useTransition, useRef, useEffect } from "react";
 import Link from "next/link";
@@ -38,7 +38,7 @@ export default function EditBookForm({ book }: EditBookFormProps) {
   const getMediaUrl = (path: string | null | undefined) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
     return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
   };
 
@@ -324,7 +324,7 @@ export default function EditBookForm({ book }: EditBookFormProps) {
     setIsUploading(true);
     setUploadProgress(1);
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
     const token = getToken();
 
     const executeSubmission = async () => {

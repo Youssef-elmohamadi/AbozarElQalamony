@@ -16,6 +16,14 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: "http",
+        hostname: "abo-zar.runasp.net",
+      },
+      {
+        protocol: "https",
+        hostname: "abo-zar.runasp.net",
+      },
+      {
         protocol: "https",
         hostname: "localhost",
       },
@@ -28,6 +36,14 @@ const nextConfig: NextConfig = {
         hostname: "127.0.0.1",
       },
     ],
+  },
+  async rewrites() {
+    return [
+      {
+        source: "/backend-api/:path*",
+        destination: "http://abo-zar.runasp.net/:path*",
+      },
+    ];
   },
   webpack(config) {
     config.module.rules.push({

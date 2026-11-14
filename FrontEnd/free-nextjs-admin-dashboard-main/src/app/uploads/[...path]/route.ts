@@ -138,7 +138,7 @@ export async function GET(
   }
 
   // 3. Fallback: Proxy from backend API with SSL validation bypass for local development
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
   const remoteUrl = `${baseUrl}/uploads/${safeSegments.join("/")}`;
 
   try {
