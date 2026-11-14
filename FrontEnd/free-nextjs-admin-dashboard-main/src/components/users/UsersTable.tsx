@@ -254,7 +254,7 @@ export default function UsersTable({
                 src={
                   user.profileImagePath.startsWith("http")
                     ? user.profileImagePath
-                    : `${process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com"
+                    : `${process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net"
                     }${user.profileImagePath}`
                 }
                 alt={user.name}

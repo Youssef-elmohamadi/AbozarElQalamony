@@ -1,6 +1,6 @@
 import { apiFetch, ApiError } from "../Config";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
 
 const isRedirect = (error: any) =>
   typeof error?.digest === "string" &&

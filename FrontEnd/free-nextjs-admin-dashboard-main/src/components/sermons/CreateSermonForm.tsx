@@ -334,7 +334,7 @@ export default function CreateSermonForm() {
     setIsUploading(true);
     setUploadProgress(1);
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
     const token = getToken();
 
     const executeSubmission = async () => {

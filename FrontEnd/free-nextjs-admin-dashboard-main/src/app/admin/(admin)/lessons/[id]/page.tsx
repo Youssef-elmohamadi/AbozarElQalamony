@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -51,7 +51,7 @@ export default async function LessonDetailsPage({ params }: LessonDetailsPagePro
   const getMediaUrl = (path: string | null | undefined) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
     return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
   };
 

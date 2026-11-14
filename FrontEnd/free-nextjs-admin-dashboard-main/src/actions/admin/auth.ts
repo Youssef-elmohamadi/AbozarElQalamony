@@ -11,7 +11,7 @@ export async function loginAction(prevState: any, formData: FormData) {
 
   try {
     const response = await apiFetch(
-      process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com",
+      process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net",
       "/api/admin/Users/login",
       {
         method: "POST",

@@ -56,7 +56,7 @@ const AudioContext = createContext<AudioContextValue | undefined>(undefined);
 const getMediaUrl = (path: string | null | undefined) => {
   if (!path) return null;
   if (path.startsWith("http")) return path;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
   return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
 };
 

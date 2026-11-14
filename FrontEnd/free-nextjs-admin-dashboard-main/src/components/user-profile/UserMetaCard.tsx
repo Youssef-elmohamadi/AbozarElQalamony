@@ -30,7 +30,7 @@ export default function UserMetaCard({
   const avatarUrl = user?.profileImagePath
     ? user.profileImagePath.startsWith("http")
       ? user.profileImagePath
-      : `${process.env.NEXT_PUBLIC_API_URL || "http://abuzarelqalamony.somee.com"}${user.profileImagePath.startsWith("/") ? "" : "/"
+      : `${process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net"}${user.profileImagePath.startsWith("/") ? "" : "/"
       }${user.profileImagePath}`
     : null;
 

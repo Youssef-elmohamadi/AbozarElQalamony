@@ -67,14 +67,12 @@ var app = builder.Build();
 
 app.UseCors("AllowAll");
 
-if (app.Environment.IsDevelopment())
+// Enable Swagger in Development and Production for testing on abo-zar.runasp.net
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "abuzarelqalamony API v1");
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "abuzarelqalamony API v1");
+});
 
 app.UseHttpsRedirection();
 
@@ -99,5 +97,15 @@ app.MapControllers();
 //         logger.LogError(ex, "An error occurred while seeding the database.");
 //     }
 // }
+
+
+  // "ConnectionStrings": {
+  //   "DefaultConnection": "Data Source=YOUSSEF\\SQLEXPRESS;Initial Catalog=abuzarelqalamony_database;Integrated Security=True;Encrypt=False;Trust Server Certificate=True"
+  // },
+
+    
+//   "ConnectionStrings": {
+//     "DefaultConnection": "workstation id=AbuzarElqalamony_database.mssql.somee.com;packet size=4096;user id=elmo7amadi_dev4_SQLLogin_1;pwd=i4df7wc4rt;data source=AbuzarElqalamony_database.mssql.somee.com;persist security info=False;initial catalog=AbuzarElqalamony_database;TrustServerCertificate=True;MultipleActiveResultSets=True"
+//   },
 
 app.Run();
