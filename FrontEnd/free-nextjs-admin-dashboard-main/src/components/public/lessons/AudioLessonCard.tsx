@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import Link from "next/link";
 import type { PublicLesson } from "@/api/public/content";
 import { getMediaUrl } from "@/lib/media";

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useTransition, useRef, useEffect } from "react";
 import Link from "next/link";
@@ -315,7 +315,10 @@ export default function CreateBookForm() {
     setIsUploading(true);
     setUploadProgress(1);
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
+    let baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
+    if (typeof window !== "undefined" && window.location.protocol === "https:" && baseUrl.startsWith("http://")) {
+      baseUrl = baseUrl.replace("http://", "https://");
+    }
     const token = getToken();
 
     const executeSubmission = async () => {
@@ -338,7 +341,12 @@ export default function CreateBookForm() {
               (pct) => setUploadProgress(pct)
             );
           } catch (httpErr) {
-            console.warn("Direct HTTP upload also failed, falling back to Server Action:", httpErr);
+            console.warn("Direct HTTP upload also failed, checking fallback options:", httpErr);
+            if (pdfFile) {
+              throw new Error(
+                "تعذر رفع ملف الكتاب (PDF) مباشرة إلى السيرفر. يُرجى تفعيل شهادة الأمان (SSL / HTTPS) على استضافة runasp.net من لوحة التحكم للسماح برفع ملفات الكتب الكبيرة مباشرة بأمان."
+              );
+            }
             res = await createBookAction(formData);
           }
         }
@@ -458,8 +466,8 @@ export default function CreateBookForm() {
               placeholder="مثال: ففروا إلى الله"
               maxLength={500}
               className={`w-full px-4 py-2.5 rounded-xl border text-sm transition-all bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${errors.title
-                  ? "border-red-400 focus:ring-red-200"
-                  : "border-gray-200 dark:border-gray-700 focus:border-brand-500 focus:ring-brand-200/50"
+                ? "border-red-400 focus:ring-red-200"
+                : "border-gray-200 dark:border-gray-700 focus:border-brand-500 focus:ring-brand-200/50"
                 }`}
             />
             {errors.title && <p className="text-xs text-red-600 mt-1">{errors.title}</p>}
@@ -488,8 +496,8 @@ export default function CreateBookForm() {
                 placeholder="مثال: فضيلة الشيخ أبو ذر القلموني"
                 maxLength={300}
                 className={`w-full px-4 py-2.5 pe-10 rounded-xl border text-sm transition-all bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 ${errors.authorName
-                    ? "border-red-400 focus:ring-red-200"
-                    : "border-gray-200 dark:border-gray-700 focus:border-brand-500 focus:ring-brand-200/50"
+                  ? "border-red-400 focus:ring-red-200"
+                  : "border-gray-200 dark:border-gray-700 focus:border-brand-500 focus:ring-brand-200/50"
                   }`}
               />
               <UserIcon className="w-4 h-4 text-gray-400 absolute end-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
@@ -508,8 +516,8 @@ export default function CreateBookForm() {
                 onChange={(e) => setCategoryId(e.target.value)}
                 disabled={loadingCategories}
                 className={`w-full appearance-none px-4 py-2.5 pe-10 rounded-xl border text-sm transition-all bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 ${errors.categoryId
-                    ? "border-red-400 focus:ring-red-200"
-                    : "border-gray-200 dark:border-gray-700 focus:border-brand-500 focus:ring-brand-200/50"
+                  ? "border-red-400 focus:ring-red-200"
+                  : "border-gray-200 dark:border-gray-700 focus:border-brand-500 focus:ring-brand-200/50"
                   }`}
               >
                 {loadingCategories ? (

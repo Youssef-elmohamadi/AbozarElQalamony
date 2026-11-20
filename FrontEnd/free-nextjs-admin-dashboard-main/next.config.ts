@@ -41,7 +41,7 @@ const nextConfig: NextConfig = {
     return [
       {
         source: "/backend-api/:path*",
-        destination: "http://abo-zar.runasp.net/:path*",
+        destination: "https://abo-zar.runasp.net/:path*",
       },
     ];
   },

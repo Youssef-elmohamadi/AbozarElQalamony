@@ -1,4 +1,4 @@
-﻿const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
+﻿const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
 
 export interface HomeCategory {
   id: number;

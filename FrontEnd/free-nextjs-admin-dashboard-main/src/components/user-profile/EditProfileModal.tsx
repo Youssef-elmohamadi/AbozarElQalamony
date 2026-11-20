@@ -224,7 +224,7 @@ export default function EditProfileModal({
   const existingAvatarUrl = user?.profileImagePath
     ? user.profileImagePath.startsWith("http")
       ? user.profileImagePath
-      : `${process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net"}${user.profileImagePath.startsWith("/") ? "" : "/"
+      : `${process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net"}${user.profileImagePath.startsWith("/") ? "" : "/"
       }${user.profileImagePath}`
     : null;
 
@@ -369,8 +369,8 @@ export default function EditProfileModal({
                     if (errors.name) setErrors((prev) => ({ ...prev, name: "" }));
                   }}
                   className={`w-full h-11 pr-10 pl-4 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 focus:outline-hidden text-right dark:bg-gray-800/60 dark:text-white transition-colors ${errors.name
-                      ? "border-red-400 bg-red-50/20 focus:border-red-500"
-                      : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] dark:border-gray-700"
+                    ? "border-red-400 bg-red-50/20 focus:border-red-500"
+                    : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] dark:border-gray-700"
                     }`}
                   placeholder="أدخل اسمك الكامل"
                 />
@@ -396,8 +396,8 @@ export default function EditProfileModal({
                     if (errors.email) setErrors((prev) => ({ ...prev, email: "" }));
                   }}
                   className={`w-full h-11 pr-10 pl-4 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 focus:outline-hidden text-right dark:bg-gray-800/60 dark:text-white transition-colors ${errors.email
-                      ? "border-red-400 bg-red-50/20 focus:border-red-500"
-                      : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] dark:border-gray-700"
+                    ? "border-red-400 bg-red-50/20 focus:border-red-500"
+                    : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] dark:border-gray-700"
                     }`}
                   placeholder="example@domain.com"
                 />
@@ -431,8 +431,8 @@ export default function EditProfileModal({
                     setErrors((prev) => ({ ...prev, currentPassword: "" }));
                 }}
                 className={`w-full h-11 pr-4 pl-11 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 focus:outline-hidden text-right dark:bg-gray-800/60 dark:text-white transition-colors ${errors.currentPassword
-                    ? "border-red-400 bg-red-50/20 focus:border-red-500"
-                    : "border-gray-300 bg-white focus:border-[#3F4A2B] dark:border-gray-700"
+                  ? "border-red-400 bg-red-50/20 focus:border-red-500"
+                  : "border-gray-300 bg-white focus:border-[#3F4A2B] dark:border-gray-700"
                   }`}
               />
               <button
@@ -482,8 +482,8 @@ export default function EditProfileModal({
                         setErrors((prev) => ({ ...prev, newPassword: "" }));
                     }}
                     className={`w-full h-11 pr-4 pl-11 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 focus:outline-hidden text-right dark:bg-gray-800/60 dark:text-white transition-colors ${errors.newPassword
-                        ? "border-red-400 bg-red-50/20 focus:border-red-500"
-                        : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] dark:border-gray-700"
+                      ? "border-red-400 bg-red-50/20 focus:border-red-500"
+                      : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] dark:border-gray-700"
                       }`}
                   />
                   <button
@@ -521,8 +521,8 @@ export default function EditProfileModal({
                         setErrors((prev) => ({ ...prev, confirmNewPassword: "" }));
                     }}
                     className={`w-full h-11 pr-4 pl-11 rounded-xl border text-sm text-gray-800 placeholder:text-gray-400 focus:outline-hidden text-right dark:bg-gray-800/60 dark:text-white transition-colors ${errors.confirmNewPassword
-                        ? "border-red-400 bg-red-50/20 focus:border-red-500"
-                        : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] dark:border-gray-700"
+                      ? "border-red-400 bg-red-50/20 focus:border-red-500"
+                      : "border-gray-200 bg-[#FAFAF5] focus:border-[#3F4A2B] dark:border-gray-700"
                       }`}
                   />
                   <button

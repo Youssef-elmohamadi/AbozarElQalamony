@@ -23,7 +23,7 @@ interface MarhabanDiscClientProps {
 const getMediaUrl = (path: string | null | undefined) => {
   if (!path) return null;
   if (path.startsWith("http")) return path;
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
   return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
 };
 
@@ -295,8 +295,8 @@ export default function MarhabanDiscClient({
                     {/* Number Badge or Playing Indicator */}
                     <div
                       className={`w-6 h-6 sm:w-7 sm:h-7 rounded-full flex items-center justify-center text-[11px] font-bold shrink-0 ${isCurrent
-                          ? "bg-[#C0673F] text-white"
-                          : "bg-[#EFEAE2] text-[#696156]"
+                        ? "bg-[#C0673F] text-white"
+                        : "bg-[#EFEAE2] text-[#696156]"
                         }`}
                     >
                       {isCurrentPlaying ? (
@@ -348,8 +348,8 @@ export default function MarhabanDiscClient({
                       type="button"
                       onClick={() => handlePlayTrack(lesson)}
                       className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center transition-all shadow-xs shrink-0 ${isCurrent
-                          ? "bg-[#C0673F] text-white hover:bg-[#A8532D]"
-                          : "bg-[#2D3823] text-white hover:bg-[#222A1A]"
+                        ? "bg-[#C0673F] text-white hover:bg-[#A8532D]"
+                        : "bg-[#2D3823] text-white hover:bg-[#222A1A]"
                         }`}
                     >
                       {isCurrentPlaying ? (

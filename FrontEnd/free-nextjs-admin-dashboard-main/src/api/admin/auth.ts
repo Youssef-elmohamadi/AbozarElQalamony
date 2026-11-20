@@ -2,7 +2,7 @@
 
 export async function login(email: string, password: string) {
   return await apiFetch(
-    (process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net"),
+    (process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net"),
     "/api/login",
     {
       method: "POST",
@@ -14,7 +14,7 @@ export async function login(email: string, password: string) {
 
 export async function logout() {
   return await apiFetch(
-    (process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net"),
+    (process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net"),
     "/api/logout",
     {
       method: "POST",

@@ -93,7 +93,7 @@ export default function QuranTable({
   const getMediaUrl = (path: string | null | undefined) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
     return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
   };
 
@@ -477,8 +477,8 @@ export default function QuranTable({
       {feedback && (
         <div
           className={`flex items-center justify-between p-4 rounded-xl border ${feedback.type === "success"
-              ? "bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-300"
-              : "bg-red-50 border-red-200 text-red-800 dark:bg-red-950/40 dark:border-red-800 dark:text-red-300"
+            ? "bg-emerald-50 border-emerald-200 text-emerald-800 dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-300"
+            : "bg-red-50 border-red-200 text-red-800 dark:bg-red-950/40 dark:border-red-800 dark:text-red-300"
             }`}
         >
           <span className="text-sm font-medium">{feedback.message}</span>

@@ -1,4 +1,4 @@
-﻿const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
+﻿const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
 
 export interface PublicLesson {
   id: number;
@@ -211,7 +211,7 @@ export async function getPublicBooks(params: {
 }
 
 export async function getPublicBookById(id: string | number): Promise<PublicBook | null> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
   try {
     const res = await fetch(`${baseUrl}/api/Books/${id}`, {
       next: {
@@ -247,7 +247,7 @@ export async function getPublicArticles(params: {
 }
 
 export async function getPublicArticleById(id: string | number): Promise<PublicArticle | null> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
   try {
     const res = await fetch(`${baseUrl}/api/Articles/${id}`, {
       next: {
@@ -292,7 +292,7 @@ export async function getPublicQuran(params: {
 }
 
 export async function getPublicQuranById(id: string | number): Promise<PublicQuran | null> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
   try {
     const res = await fetch(`${baseUrl}/api/quran/${id}`, {
       next: {
@@ -343,7 +343,7 @@ export async function getGlobalSearch(params: {
   limitPerSection?: number;
   section?: string;
 } = {}): Promise<GlobalSearchResult> {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
   const url = new URL(`${baseUrl}/api/search`);
 
   if (params.q) url.searchParams.set("q", params.q.trim());

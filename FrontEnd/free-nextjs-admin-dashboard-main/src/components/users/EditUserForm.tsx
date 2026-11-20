@@ -488,7 +488,7 @@ export default function EditUserForm({ user }: EditUserFormProps) {
                         existingImagePath.startsWith("http")
                           ? existingImagePath
                           : `${process.env.NEXT_PUBLIC_API_URL ||
-                          "http://abo-zar.runasp.net"
+                          "https://abo-zar.runasp.net"
                           }${existingImagePath}`
                       }
                       alt={user.name}

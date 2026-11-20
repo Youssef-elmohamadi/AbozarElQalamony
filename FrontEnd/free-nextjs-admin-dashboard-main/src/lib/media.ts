@@ -9,7 +9,7 @@ export function getMediaUrl(path: string | null | undefined): string | null {
     return normalized;
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
   return `${baseUrl}${normalized}`;
 }
 

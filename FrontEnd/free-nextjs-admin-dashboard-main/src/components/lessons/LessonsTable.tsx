@@ -88,7 +88,7 @@ export default function LessonsTable({
   const getMediaUrl = (path: string | null | undefined) => {
     if (!path) return null;
     if (path.startsWith("http://") || path.startsWith("https://")) return path;
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "http://abo-zar.runasp.net";
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || "https://abo-zar.runasp.net";
     return `${baseUrl}${path.startsWith("/") ? "" : "/"}${path}`;
   };
 
@@ -491,8 +491,8 @@ export default function LessonsTable({
       {feedback && (
         <div
           className={`flex items-center justify-between p-4 rounded-xl border animate-in fade-in duration-200 ${feedback.type === "success"
-              ? "bg-green-50 border-green-200 text-green-800 dark:bg-green-950/30 dark:border-green-800 dark:text-green-300"
-              : "bg-red-50 border-red-200 text-red-800 dark:bg-red-950/30 dark:border-red-800 dark:text-red-300"
+            ? "bg-green-50 border-green-200 text-green-800 dark:bg-green-950/30 dark:border-green-800 dark:text-green-300"
+            : "bg-red-50 border-red-200 text-red-800 dark:bg-red-950/30 dark:border-red-800 dark:text-red-300"
             }`}
         >
           <div className="flex items-center gap-3">
